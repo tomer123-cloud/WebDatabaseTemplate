@@ -1,0 +1,65 @@
+body {
+ overflow-x: hidden;
+}
+
+
+
+#LoginHeader{
+  font-size: 70px;
+  position: relative;
+  top: 20px;
+  left: 525px;
+}
+
+
+
+#EnterUsernameText {
+  font-size: 42px;
+  position: relative;
+  top: 300px;
+  left: 500px;
+  }
+
+#UsernameInput{
+  position: relative;
+  left: 950px;
+  top: 225px;
+  font-size: 18px;
+  width: 250px;
+  height: 30px;
+}
+
+
+#SubmitUsernameButton{
+  position: relative;
+  left: 960px;
+  top: 70px;
+}
+
+
+
+#EnterPasswordText {
+  font-size: 42px;
+  position: relative;
+  top: 450px;
+  left: 500px;
+  }
+
+
+
+#PasswordInput{
+  position: relative;
+  left: 950px;
+  top: 375px;
+  font-size: 18px;
+  width: 250px;
+  height: 30px;
+}
+
+
+
+#SubmitPasswordButton{
+  position: relative;
+  left: 900px;
+  top: 375px;
+}
