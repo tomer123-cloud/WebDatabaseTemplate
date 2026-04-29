@@ -1,11 +1,26 @@
 body {
-    overflow-x: hidden;
+  overflow: hidden;
+  background-color: rgb(196, 224, 233);
+  user-select: none;
 }
 
-#containerDiv {
+#ContainerDiv {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 50px;
+}
+
+#ButtonContainerDiv {
+  display: flex;
+  gap: 40px;
+}
+
+#HeadersContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: -30px;
 }
 
 .authDiv {
@@ -21,9 +36,6 @@ body {
 
 #SignUpButton {
   padding: 30px 75px;
-  position: relative;
-  left: 700px;
-  top: 300px;
   border: 3px solid #e00dbd;
   border-radius: 10px;
   font-size: 25px;
@@ -32,9 +44,6 @@ body {
 
 #LoginButton {
   padding: 30px 75px;
-  position: relative;
-  top: 300px;
-  left: 800px;
   border: 3px solid #e00dbd;
   border-radius: 10px;
   font-size: 25px;
@@ -42,25 +51,36 @@ body {
 
 #WelcomeHeader {
   font-size: 70px;
-  position: relative;
-  top: 20px;
-  left: 525px;
   color: #0749a0;
   -webkit-text-stroke: 1.5px black;
 }
 
 #SignupOrLoginOptionHeader {
   font-size: 42px;
-  position: relative;
-  top: 40px;
-  left: 85px;
+  margin-bottom: 100px;
+  margin-top: -10px;
   font-family: "Tahoma", sans-serif;
 }
 
-#TicTacToeGameImage{
-width: 400px;
-height: 400px;
-position: relative;
-top: 100px;
-left: 325px
+#TicTacToeGameImage {
+  width: 400px;
+  height: 400px;
+  pointer-events: none;
+}
+
+/* #TicTacToeLeftSideBackrounndImg {
+  height: 1000px;
+  pointer-events: none;
+  position: fixed;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-500px);
+}  */
+
+#hr1 {
+  border: none;
+  height: 2px;
+  width: fit-content;
+  background-color: black;
+
 }
