@@ -40,6 +40,12 @@ body {
   border: 3px solid #e00dbd;
   border-radius: 10px;
   font-size: 25px;
+  transition:0.22s;
+}
+
+#SignUpButton:hover{
+  background-color: rgb(199,199,199);
+  cursor: pointer;
 }
 
 
@@ -48,6 +54,12 @@ body {
   border: 3px solid #e00dbd;
   border-radius: 10px;
   font-size: 25px;
+  transition:0.22s;
+}
+
+#LoginButton:hover{
+  background-color: rgb(199,199,199);
+  cursor: pointer;
 }
 
 #WelcomeHeader {
@@ -92,16 +104,16 @@ body {
   pointer-events: none;
   position: fixed;
   left: 50%;
-  top: 0;
+  top: 27%;
 
 }
 
 
 #XCharecter{
+    display: block;
   position: fixed;
-  width: 250px;
-  left: 38%;
-  top:49%;
-  transform: translate(-500px);
-  pointer-events: none;
+  width: 2250px;
+ pointer-events: none; /*זה אומר שאי אפשר לבחור את התמונה ולהזיז אותה */
+  right: 45%;
+  top: 12%;  
 }
