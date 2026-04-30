@@ -1,5 +1,5 @@
 body {
-  overflow: hidden;
+ /* overflow: hidden;  */
   background-color: rgb(196, 224, 233);
   user-select: none;
 }
@@ -83,4 +83,18 @@ body {
   width: fit-content;
   background-color: black;
 
+}
+
+#CircleCharecter{
+  width: 1250px;
+}
+
+
+#X{
+  position: fixed;
+  width: 250px;
+  left: 38%;
+  top:49%;
+  transform: translate(-500px);
+  pointer-events: none;
 }
