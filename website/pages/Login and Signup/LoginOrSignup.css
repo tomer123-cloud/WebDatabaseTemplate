@@ -1,7 +1,8 @@
 body {
- /* overflow: hidden;  */
+  overflow: hidden;  
   background-color: rgb(196, 224, 233);
   user-select: none;
+  position: relative;
 }
 
 #ContainerDiv {
@@ -86,11 +87,17 @@ body {
 }
 
 #CircleCharecter{
+  display: block;
   width: 1250px;
+  pointer-events: none;
+  position: fixed;
+  left: 50%;
+  top: 0;
+
 }
 
 
-#X{
+#XCharecter{
   position: fixed;
   width: 250px;
   left: 38%;
