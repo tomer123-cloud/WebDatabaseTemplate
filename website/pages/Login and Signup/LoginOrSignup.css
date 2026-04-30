@@ -110,7 +110,7 @@ body {
 
 
 #XCharecter{
-    display: block;
+  display: block;
   position: fixed;
   width: 2250px;
  pointer-events: none; /*זה אומר שאי אפשר לבחור את התמונה ולהזיז אותה */
