@@ -1,0 +1,177 @@
+body {
+  overflow: hidden;
+  margin: 0;
+  background: linear-gradient(135deg, #1b2536, #2b3a52);
+  user-select: none;
+  font-family: "Tahoma", sans-serif;
+  height: 100vh;
+}
+
+
+#ContainerDiv {
+  grid-area: main;
+
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+#XWarriorCharacter {
+  width: 675px;
+  max-height: 75vh;
+  object-fit: contain;
+  position: fixed;
+  right: 0%;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#OWarriorCharacter {
+  width: 675px;
+  max-height: 75vh;
+  object-fit: contain;
+  position: fixed;
+  left: 1%;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#StartButton {
+  width: 420px;
+  height: 140px;
+
+  position: fixed;
+  left: 40%;
+  top: 46%;
+
+  font-size: 60px;
+  font-weight: bold;
+
+  color: #63b3ff;
+  text-shadow: 0px 0px 10px rgba(99, 179, 255, 0.75);
+
+  border: 6px solid transparent;
+  border-radius: 25px;
+
+  background: linear-gradient(#0f172a, #0f172a) padding-box,
+              linear-gradient(90deg, #ff3333, #3388ff, #ff3333) border-box;
+
+  background-size: 100% 100%, 300% 300%;
+
+  animation: movingBorder 3s linear infinite;
+  transition: 0.22s;
+
+  box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.45);
+}
+
+#StartButton:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+
+  box-shadow: 0px 0px 45px rgba(255, 255, 255, 0.25),
+              0px 0px 35px rgba(51, 136, 255, 0.55),
+              0px 0px 35px rgba(255, 51, 51, 0.45);
+
+  filter: brightness(1.25);
+}
+
+@keyframes movingBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+#HowToPlayButton {
+  width: 260px;
+  height: 70px;
+
+  position: fixed;
+  left: 58%;
+  top: 65%;
+  transform: translateX(-50%);
+
+  font-size: 28px;
+  font-weight: bold;
+
+  color: #a8d8ff;
+  text-shadow: 0px 0px 8px rgba(99, 179, 255, 0.55);
+
+  border: 3px solid #3388ff;
+  border-radius: 18px;
+
+  background-color: #111827;
+
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.35);
+  transition: 0.22s;
+}
+
+#HowToPlayButton:hover {
+  background-color: #172033;
+  border-color: #ff3333;
+
+  box-shadow: 0px 0px 25px rgba(51, 136, 255, 0.45),
+              0px 0px 20px rgba(255, 51, 51, 0.35);
+
+  cursor: pointer;
+}
+
+#CreditsButton {
+  width: 260px;
+  height: 70px;
+
+  position: fixed;
+  left: 42%;
+  top: 65%;
+  transform: translateX(-50%);
+
+  font-size: 28px;
+  font-weight: bold;
+
+  color: #a8d8ff;
+  text-shadow: 0px 0px 8px rgba(99, 179, 255, 0.55);
+
+  border: 3px solid #3388ff;
+  border-radius: 18px;
+
+  background-color: #111827;
+
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.35);
+  transition: 0.22s;
+}
+
+#CreditsButton:hover {
+  background-color: #172033;
+  border-color: #ff3333;
+
+  box-shadow: 0px 0px 25px rgba(51, 136, 255, 0.45),
+              0px 0px 20px rgba(255, 51, 51, 0.35);
+
+  cursor: pointer;
+}
+
+#WelcomeHeader {
+  position: fixed;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 62px;
+  font-weight: bold;
+  font-family: "Tahoma", sans-serif;
+
+  color: #a8d8ff;
+  text-align: center;
+
+  text-shadow: 0px 0px 12px rgba(99, 179, 255, 0.75),
+               0px 0px 22px rgba(51, 136, 255, 0.45);
+
+  margin: 0;
+}
