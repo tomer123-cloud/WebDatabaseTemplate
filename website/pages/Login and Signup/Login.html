@@ -2,18 +2,39 @@
 <html>
   <head>
     <link rel="stylesheet" href="Login.css" />
-    <title>Login To Your Account  </title>
+    <title>Login To Your Account</title>
+
+    <!-- the icon in the browser tab -->
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2911/2911080.png" type="image/png">
   </head>
 
   <body>
+
+    <!-- Background decoration -->
+    <div id="BackgroundO">O</div>
+    <div id="BackgroundX">X</div>
+
+    <!-- back button (to LoginOrSignUp page) -->
+    <button id="BackButton">Back</button>
+
+    <!-- Main white login box -->
     <div id="HeadersContainer">
-      <h1 id = "LoginHeader">Login To Your Account</h1>
-      <input id= "UsernameInput"type="text" placeholder="Enter Your Username Here">
-      <input id="PasswordInput" type="text" placeholder="Enter Your password Here">
+      <h1 id="LoginHeader">Login To Your Account</h1>
+
+      <input id="UsernameInput" type="text" placeholder="Enter Your Username Here">
+
+      <!-- type="password" hides the password while typing -->
+      <input id="PasswordInput" type="password" placeholder="Enter Your Password Here">
+
+      <!-- This message is hidden in CSS, but it keeps its place -->
+      <p id="ErrorMessage">Username or password is incorrect</p>
+
+      <!-- Sign up text. It looks clickable, but does not move to another page yet -->
+      <p id="SignUpText">
+        Don't have an account? <span id="SignUpLink">Sign up</span>
+      </p>
     </div>
-      <button id="SubmitUsernameButton">Submit</button>
-      <button id="SubmitPasswordButton"> Submit</button> 
+
     <!-- <script src="index.js"></script> -->
   </body>
 </html>

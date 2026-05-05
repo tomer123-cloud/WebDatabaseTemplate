@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="SignUp.css" />
+    <title>Create A New Account</title>
+
+    <!-- the icon in the browser tab -->
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2911/2911080.png" type="image/png">
+  </head>
+
+  <body>
+
+    <!-- Background decoration -->
+    <div id="BackgroundO">O</div>
+    <div id="BackgroundX">X</div>
+
+    <!-- back button to the LoginOrSignUp page -->
+    <button id="BackButton">Back</button>
+
+    <!-- Main white sign up box -->
+    <div id="HeadersContainer">
+      <h1 id="SignUpHeader">Create A New Account</h1>
+
+      <input id="UsernameInput" type="text" minlength="3" maxlength="12" placeholder="Choose Your Username">
+
+      <!-- type="password" hides the password while typing -->
+      <input id="PasswordInput" type="password" placeholder="Choose Your Password">
+
+      <!-- confirm password input -->
+      <input id="ConfirmPasswordInput" type="password" placeholder="Confirm Your Password">
+
+      <!-- Error messages. They are hidden now, and JavaScript can show the correct one later -->
+      <div id="ErrorMessagesContainer">
+        <p class="ErrorMessage" id="PasswordsNotMatchMessage">Passwords do not match</p>
+        <p class="ErrorMessage" id="UsernameTooShortMessage">Username is too short</p>
+        <p class="ErrorMessage" id="UsernameTooLongMessage">Username is too long</p>
+      </div>
+
+      <!-- create account button. It does not do anything yet -->
+      <button id="CreateAccountButton">Create Account</button>
+
+      <!-- Login text. It looks clickable, but does not move to another page yet -->
+      <p id="LoginText">
+        Already have an account? <span id="LoginLink">Login</span>
+      </p>
+    </div>
+
+    <!-- <script src="index.js"></script> -->
+  </body>
+</html>

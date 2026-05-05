@@ -1,0 +1,200 @@
+body {
+  overflow: hidden; /* Hides anything that goes outside the screen */
+  background-color: rgb(196, 224, 233);
+  user-select: none; /* Prevents the user from selecting text on the page */
+  margin: 0;
+  font-family: "Tahoma", sans-serif;
+  position: relative;
+
+  display: flex;
+  justify-content: center; /* Centers the sign up box horizontally */
+  align-items: center; /* Centers the sign up box vertically */
+  height: 100vh; /* Makes the body take the full screen height */
+}
+
+/* Background O */
+#BackgroundO {
+  position: absolute; /* Lets us place the O exactly where we want */
+  left: 80px;
+  top: 70px;
+  font-size: 190px;
+  color: rgba(7, 73, 160, 0.15); /* The last number controls transparency */
+  font-weight: bold;
+  pointer-events: none; /* Makes sure the O cannot be clicked */
+}
+
+/* Background X */
+#BackgroundX {
+  position: absolute; /* Lets us place the X exactly where we want */
+  right: 90px;
+  bottom: 45px;
+  font-size: 190px;
+  color: rgba(224, 13, 40, 0.15); /* The last number controls transparency */
+  font-weight: bold;
+  pointer-events: none; /* Makes sure the X cannot be clicked */
+}
+
+/* Back button at the top right of the screen */
+#BackButton {
+  position: fixed; /* Keeps the button in the same place on the screen */
+  top: 25px;
+  right: 25px;
+
+  width: 120px;
+  height: 48px;
+  font-size: 20px;
+
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+  transition: 0.22s; /* Makes the hover change smoother */
+}
+
+#BackButton:hover {
+  background-color: rgb(199, 199, 199);
+  cursor: pointer; /* Shows the hand cursor on hover */
+}
+
+/* Main white sign up box */
+#HeadersContainer {
+  width: 500px;
+  padding: 45px;
+  padding-bottom: 55px;
+
+  background-color: white;
+  border-radius: 25px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25); /* Adds a shadow around the box */
+
+  display: flex;
+  flex-direction: column; /* Places the items one under another */
+  align-items: center;
+  gap: 18px; /* Space between the items inside the box */
+
+  position: relative;
+  z-index: 1; /* Makes sure the white box is above the background X and O */
+}
+
+#SignUpHeader {
+  font-size: 42px;
+  color: #0749a0;
+  -webkit-text-stroke: 0.8px black; /* Adds a thin black outline to the text */
+  margin: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+#UsernameInput {
+  width: 360px;
+  height: 55px;
+  font-size: 20px;
+
+  border: 2px solid black;
+  border-radius: 12px;
+  text-align: center;
+  outline: none; /* Removes the default browser outline */
+}
+
+#PasswordInput {
+  width: 360px;
+  height: 55px;
+  font-size: 20px;
+
+  border: 2px solid black;
+  border-radius: 12px;
+  text-align: center;
+  outline: none; /* Removes the default browser outline */
+}
+
+#ConfirmPasswordInput {
+  width: 360px;
+  height: 55px;
+  font-size: 20px;
+
+  border: 2px solid black;
+  border-radius: 12px;
+  text-align: center;
+  outline: none; /* Removes the default browser outline */
+}
+
+#UsernameInput:hover {
+  background-color: rgb(235, 235, 235);
+}
+
+#PasswordInput:hover {
+  background-color: rgb(235, 235, 235);
+}
+
+#ConfirmPasswordInput:hover {
+  background-color: rgb(235, 235, 235);
+}
+
+#UsernameInput:focus {
+  border: 2px solid #0749a0;
+  box-shadow: 0px 0px 8px rgba(7, 73, 160, 0.5); /* Adds blue glow when typing */
+}
+
+#PasswordInput:focus {
+  border: 2px solid #0749a0;
+  box-shadow: 0px 0px 8px rgba(7, 73, 160, 0.5); /* Adds blue glow when typing */
+}
+
+#ConfirmPasswordInput:focus {
+  border: 2px solid #0749a0;
+  box-shadow: 0px 0px 8px rgba(7, 73, 160, 0.5); /* Adds blue glow when typing */
+}
+
+#ErrorMessagesContainer {
+  width: 360px;
+  height: 24px; /* Keeps space for one error message */
+  position: relative;
+}
+
+.ErrorMessage {
+  color: red;
+  font-size: 16px;
+  margin: 0;
+  text-align: center;
+
+  position: absolute; /* Places all messages in the same place */
+  width: 100%;
+
+  visibility: hidden; /* Hides the messages until JavaScript shows one */
+}
+
+#CreateAccountButton {
+  width: 230px;
+  height: 52px;
+  font-size: 21px;
+
+  border: 2px solid #0749a0;
+  border-radius: 12px;
+  background-color: white;
+  color: #0749a0;
+  font-weight: bold;
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.18);
+  transition: 0.22s;
+}
+
+#CreateAccountButton:hover {
+  background-color: #eef6ff;
+  transform: translateY(-2px); /* Moves the button slightly up on hover */
+  cursor: pointer;
+}
+
+#LoginText {
+  font-size: 18px;
+  margin: 0;
+  color: black;
+}
+
+#LoginLink {
+  color: #0749a0;
+  font-weight: bold;
+  padding-bottom: 3px; /* Adds small space before the underline */
+  border-bottom: 3px solid transparent; /* Keeps space for the hover underline */
+}
+
+#LoginLink:hover {
+  border-bottom: 3px solid #0749a0; /* Creates a thicker underline on hover */
+  cursor: pointer;
+}

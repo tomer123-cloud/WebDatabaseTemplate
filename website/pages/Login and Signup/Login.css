@@ -1,27 +1,151 @@
 body {
- overflow-x: hidden;
-}
+  overflow: hidden; /* Hides anything that goes outside the screen */
+  background-color: rgb(196, 224, 233);
+  user-select: none; /* Prevents the user from selecting text on the page */
+  margin: 0;
+  font-family: "Tahoma", sans-serif;
+  position: relative; /* Allows absolute elements to be positioned on the page */
 
-#HeadersContainer{
   display: flex;
-  flex-direction: column;
+  justify-content: center; /* Centers the login box horizontally */
+  align-items: center; /* Centers the login box vertically */
+  height: 100vh; /* Makes the body take the full screen height */
+}
+
+/* Background O */
+#BackgroundO {
+  position: absolute; /* Lets us place the O exactly where we want */
+  left: 80px;
+  top: 70px;
+  font-size: 190px;
+  color: rgba(7, 73, 160, 0.15); /* The last number controls transparency */
+  font-weight: bold;
+  pointer-events: none; /* Makes sure the O cannot be clicked */
+}
+
+/* Background X */
+#BackgroundX {
+  position: absolute; /* Lets us place the X exactly where we want */
+  right: 90px;
+  bottom: 45px;
+  font-size: 190px;
+  color: rgba(224, 13, 40, 0.15); /* The last number controls transparency */
+  font-weight: bold;
+  pointer-events: none; /* Makes sure the X cannot be clicked */
+}
+
+/* Back button at the top right of the screen */
+#BackButton {
+  position: fixed; /* Keeps the button in the same place on the screen */
+  top: 25px;
+  right: 25px;
+
+  width: 120px;
+  height: 48px;
+  font-size: 20px;
+
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+  transition: 0.22s; /* Makes the hover change smoother */
+}
+
+#BackButton:hover {
+  background-color: rgb(199, 199, 199);
+  cursor: pointer; /* Shows the hand cursor on hover */
+}
+
+/* Main white login box */
+#HeadersContainer {
+  width: 480px;
+  padding: 45px;
+  padding-bottom: 65px; /* Adds more space at the bottom of the white box */
+
+  background-color: white;
+  border-radius: 25px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25); /* Adds a shadow around the box */
+
+  display: flex;
+  flex-direction: column; /* Places the items one under another */
   align-items: center;
-  gap: 100px;
+  gap: 22px; /* Space between the items inside the box */
+
+  position: relative;
+  z-index: 1; /* Makes sure the white box is above the background X and O */
 }
 
-#LoginHeader{
-  font-size: 70px;
+#LoginHeader {
+  font-size: 45px;
+  color: #0749a0;
+  -webkit-text-stroke: 0.8px black; /* Adds a thin black outline to the text */
+  margin: 0;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
+#UsernameInput {
+  width: 360px;
+  height: 55px;
+  font-size: 20px;
 
-#UsernameInput{
+  border: 2px solid black;
+  border-radius: 12px;
+  text-align: center;
+  outline: none; /* Removes the default browser outline */
+}
+
+#PasswordInput {
+  width: 360px;
+  height: 55px;
+  font-size: 20px;
+
+  border: 2px solid black;
+  border-radius: 12px;
+  text-align: center;
+  outline: none; /* Removes the default browser outline */
+}
+
+#UsernameInput:hover {
+  background-color: rgb(235, 235, 235);
+}
+
+#PasswordInput:hover {
+  background-color: rgb(235, 235, 235);
+}
+
+#UsernameInput:focus {
+  border: 2px solid #0749a0;
+  box-shadow: 0px 0px 8px rgba(7, 73, 160, 0.5); /* Adds blue glow when typing */
+}
+
+#PasswordInput:focus {
+  border: 2px solid #0749a0;
+  box-shadow: 0px 0px 8px rgba(7, 73, 160, 0.5); /* Adds blue glow when typing */
+}
+
+#ErrorMessage {
+  color: red;
+  font-size: 17px;
+  margin: 0;
+  height: 22px; /* Keeps space for the error message */
+
+  visibility: hidden; /* Hides the text but keeps its space */
+}
+
+#SignUpText {
   font-size: 18px;
-  width: 250px;
-  height: 30px;
+  margin: 0;
+  color: black;
 }
 
-#PasswordInput{
-  font-size: 18px;
-  width: 250px;
-  height: 30px;
+#SignUpLink {
+  color: #0749a0;
+  font-weight: bold;
+  padding-bottom: 3px; /* Adds small space before the underline */
+  border-bottom: 3px solid transparent; /* Keeps space for the hover underline */
+}
+
+#SignUpLink:hover {
+  border-bottom: 3px solid #0749a0; /* Creates a thicker underline on hover */
+  cursor: pointer;
 }
