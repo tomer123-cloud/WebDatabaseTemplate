@@ -149,3 +149,26 @@ body {
   border-bottom: 3px solid #0749a0; /* Creates a thicker underline on hover */
   cursor: pointer;
 }
+
+#LoginSubmitButton {
+  width: 210px;
+  height: 52px;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  border: 2px solid #0749a0;
+  border-radius: 12px;
+
+  background-color: white;
+  color: #0749a0;
+
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.18);
+  transition: 0.22s;
+}
+
+#LoginSubmitButton:hover {
+  background-color: #eef6ff;
+  transform: translateY(-2px);
+  cursor: pointer;
+}

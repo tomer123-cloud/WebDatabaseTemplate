@@ -25,16 +25,16 @@ class Program
 
       try
       {
-        if (request.Name == "getItems")
+        if (request.Name == "getLoginDetail")
         {
-          request.Respond(database.Items);
+          request.Respond(database.LoginDetails);
         }
         else if (request.Name == "addItem")
         {
-          var (name, amount) = request.GetParams<(string, int)>();
-          var item = new Item(name, amount);
-          database.Items.Add(item);
-          database.SaveChanges();
+          // var (name, amount) = request.GetParams<(string, int)>();
+          // var item = new Item(name, amount);
+          // database.Items.Add(item);
+          // database.SaveChanges();
         }
       }
       catch (Exception exception)
@@ -55,9 +55,15 @@ class Database() : DatabaseCore("database")
 }
 
 
-class LoginDetail(string username, string password)
+class LoginDetail
 {
- public int Id { get; set; } = default!;
-  public string UserName { get; set; } = username;
- public string Password { get; set; } = password;
+  public int Id { get; set; } = default!;
+  public string Username { get; set; }
+  public string Password { get; set; }
+
+  public LoginDetail(string username, string password)
+  {
+    Username = username;
+    Password = password;
+  }
 }
