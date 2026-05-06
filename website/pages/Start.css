@@ -7,15 +7,30 @@ body {
   height: 100vh;
 }
 
-
-#ContainerDiv {
-  grid-area: main;
-
+#ContainerDiv{
+  height: 100vh;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#ButtonContainer {
+  grid-area: main;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: 75px;
+  margin-top: 10%;
+}
+
+#SmallButtonContainer {
+  display: flex;
+  flex-direction: row;
+ gap: 40px;
 }
 
 #XWarriorCharacter {
@@ -44,10 +59,7 @@ body {
   width: 420px;
   height: 140px;
 
-  position: fixed;
-  left: 40%;
-  top: 46%;
-
+  margin-top: 5%;
   font-size: 60px;
   font-weight: bold;
 
@@ -62,7 +74,7 @@ body {
 
   background-size: 100% 100%, 300% 300%;
 
-  animation: movingBorder 3s linear infinite;
+  animation: movingBorder 5s linear infinite;
   transition: 0.22s;
 
   box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.45);
@@ -93,10 +105,6 @@ body {
   width: 260px;
   height: 70px;
 
-  position: fixed;
-  left: 58%;
-  top: 65%;
-  transform: translateX(-50%);
 
   font-size: 28px;
   font-weight: bold;
@@ -126,11 +134,6 @@ body {
 #CreditsButton {
   width: 260px;
   height: 70px;
-
-  position: fixed;
-  left: 42%;
-  top: 65%;
-  transform: translateX(-50%);
 
   font-size: 28px;
   font-weight: bold;

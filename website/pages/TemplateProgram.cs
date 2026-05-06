@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Project.DatabaseUtilities;
 using Project.LoggingUtilities;
@@ -47,17 +47,14 @@ class Program
 }
 
 
-
-
 class Database() : DatabaseCore("database")
 {
-  public DbSet<LoginDetail> LoginDetails { get; set; } = default!;
+  public DbSet<Item> Items { get; set; } = default!;
 }
 
-
-class LoginDetail(string username, string password)
+class Item(string name, double amount)
 {
- public int Id { get; set; } = default!;
-  public string UserName { get; set; } = username;
- public string Password { get; set; } = password;
+  public int Id { get; set; } = default!;
+  public string Name { get; set; } = name;
+  public double Amount { get; set; } = amount;
 }
