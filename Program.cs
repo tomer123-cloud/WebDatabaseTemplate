@@ -27,7 +27,7 @@ class Program
       {
         if (request.Name == "getLoginDetail")
         {
-          request.Respond(database.LoginDetails);
+          request.Respond(database.User);
         }
         else if (request.Name == "addItem")
         {
@@ -51,19 +51,15 @@ class Program
 
 class Database() : DatabaseCore("database")
 {
-  public DbSet<LoginDetail> LoginDetails { get; set; } = default!;
+  public DbSet<User> Users { get; set; } = default!;
 }
 
 
-class LoginDetail
+class User(string username, string password, string usertoken)
 {
   public int Id { get; set; } = default!;
-  public string Username { get; set; }
-  public string Password { get; set; }
+  public string Username { get; set; } = username; 
+  [JsonIgnore] public string Password { get; set; } = password;
+  [JsonIgnore] public string UserToken {get; set;} = usertoken;
 
-  public LoginDetail(string username, string password)
-  {
-    Username = username;
-    Password = password;
-  }
 }
