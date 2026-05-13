@@ -9,14 +9,16 @@ LoginSubmitButton.onclick = async function() { // Runs this function when the lo
   var username = UsernameInput.value; // Saves what the user wrote in the username input
   var password = PasswordInput.value; // Saves what the user wrote in the password input
 
-  var loginSucceeded = await send<boolean>("login", username, password); // Sends the username and password to the server and waits for true or false
+  var userToken = await send<string | null>("Login", username, password); // Sends username and password and gets a token or null
 
-  if (loginSucceeded) { // If the server says the login is correct
+  if (userToken != null) { // If the server found a matching user
     ErrorMessage.style.visibility = "hidden"; // Hides the error message
+
+    localStorage.setItem("userToken", userToken); // Saves the token in the browser
 
     // Later you can move the user to another page here
     // location.href = "../Start/Start.html";
-  } else { // If the server says the login is wrong
+  } else { // If the username or password is wrong
     ErrorMessage.style.visibility = "visible"; // Shows the error message
   }
 };

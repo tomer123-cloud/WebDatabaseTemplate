@@ -8,11 +8,6 @@ var ConfirmPasswordInput = document.querySelector<HTMLInputElement>("#ConfirmPas
 var ErrorDiv = document.querySelector<HTMLInputElement>("#ErrorDiv")!;
 
 
-CreateAccountButton.onclick = async function() {
-  await send("addLoginDetail", UserNameInput.value, PasswordInput.value);
-};
-
-
 
 
 CreateAccountButton.onclick = async function () {
@@ -21,7 +16,7 @@ CreateAccountButton.onclick = async function () {
     return;
   }
 
-  var userToken = await send<string | null>("signUp", UserNameInput.value, PasswordInput.value);
+  var userToken = await send<string | null>("SignUp", UserNameInput.value, PasswordInput.value);
 
   if (userToken == null) {
     ErrorDiv.innerText = "A user with that username already exists.";

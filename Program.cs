@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Project.DatabaseUtilities;
 using Project.LoggingUtilities;
@@ -25,17 +27,34 @@ class Program
 
       try
       {
-        if (request.Name == "getLoginDetail")
+         if (request.Name == "Login")
         {
-          request.Respond(database.User);
+          var (username, password) = request.GetParams<(string, string)>();
+
+          var user = database.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+
+          request.Respond(user?.UserToken);
         }
-        else if (request.Name == "addItem")
+
+        else if (request.Name == "Signup")
         {
-          // var (name, amount) = request.GetParams<(string, int)>();
-          // var item = new Item(name, amount);
-          // database.Items.Add(item);
-          // database.SaveChanges();
+          var (username, password) = request.GetParams<(string, string)>();
+
+          if (database.Users.Any(u => u.Username == username))
+          {
+            continue;
+          }
+
+          var token = Guid.NewGuid().ToString();
+          var user = new User(username, password, token);
+          database.Users.Add(user);
+          database.SaveChanges();
+
+          request.Respond(token);
         }
+
+
+        
       }
       catch (Exception exception)
       {
@@ -44,11 +63,11 @@ class Program
       }
     }
   }
+
+
+
+
 }
-
-
-
-
 class Database() : DatabaseCore("database")
 {
   public DbSet<User> Users { get; set; } = default!;
@@ -63,3 +82,4 @@ class User(string username, string password, string usertoken)
   [JsonIgnore] public string UserToken {get; set;} = usertoken;
 
 }
+
