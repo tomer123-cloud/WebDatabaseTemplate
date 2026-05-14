@@ -23,11 +23,11 @@ class Program
     {
       var request = server.WaitForRequest();
 
-      Console.WriteLine($"Recieved a request: {request.Name}");
+      Console.WriteLine($"Received a request: {request.Name}");
 
       try
       {
-         if (request.Name == "Login")
+        if (request.Name == "Login")
         {
           var (username, password) = request.GetParams<(string, string)>();
 
@@ -35,26 +35,38 @@ class Program
 
           request.Respond(user?.UserToken);
         }
-
         else if (request.Name == "Signup")
         {
           var (username, password) = request.GetParams<(string, string)>();
 
           if (database.Users.Any(u => u.Username == username))
           {
+            request.Respond<string?>(null);
             continue;
           }
 
           var token = Guid.NewGuid().ToString();
           var user = new User(username, password, token);
+
           database.Users.Add(user);
           database.SaveChanges();
 
           request.Respond(token);
         }
+        else if (request.Name == "getUser")
+        {
+          var token = request.GetParams<string?>();
 
+          if (token == null)
+          {
+            request.Respond<string?>(null);
+            continue;
+          }
 
-        
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          request.Respond(user);
+        }
       }
       catch (Exception exception)
       {
@@ -63,23 +75,20 @@ class Program
       }
     }
   }
-
-
-
-
 }
+
 class Database() : DatabaseCore("database")
 {
   public DbSet<User> Users { get; set; } = default!;
 }
 
-
-class User(string username, string password, string usertoken)
+class User(string username, string password, string userToken)
 {
   public int Id { get; set; } = default!;
-  public string Username { get; set; } = username; 
+
+  public string Username { get; set; } = username;
+
   [JsonIgnore] public string Password { get; set; } = password;
-  [JsonIgnore] public string UserToken {get; set;} = usertoken;
 
+  [JsonIgnore] public string UserToken { get; set; } = userToken;
 }
-

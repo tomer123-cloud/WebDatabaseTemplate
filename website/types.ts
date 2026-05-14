@@ -4,8 +4,7 @@ export type Item = {
 };
 
 
-export type LoginDetail = {
+export type User = {
   id: number;
-  userName: string;
-  password: string;
+  username: string;
 };

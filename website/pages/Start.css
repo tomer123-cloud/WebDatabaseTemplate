@@ -45,8 +45,7 @@ body {
 }
 
 #OWarriorCharacter {
-  width: 675px;
-  max-height: 75vh;
+  width: 30%;
   object-fit: contain;
   position: fixed;
   left: 1%;
