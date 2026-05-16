@@ -13,8 +13,8 @@ LoginSubmitButton.onclick = async function() { // Runs this function when the lo
 
   if (userToken != null) { // If the server found a matching user
     ErrorMessage.style.visibility = "hidden"; // Hides the error message
-
     localStorage.setItem("userToken", userToken); // Saves the token in the browser
+    location.href = "/Lobby.html"; // sends the user to Lobby.html page
 
     // Later you can move the user to another page here
     // location.href = "../Start/Start.html";

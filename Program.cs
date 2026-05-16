@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Project.DatabaseUtilities;
 using Project.LoggingUtilities;
 using Project.ServerUtilities;
@@ -67,6 +68,16 @@ class Program
 
           request.Respond(user);
         }
+
+
+        else if (request.Name == "Logout")
+        {
+          User?user = null;
+          request.Respond(user);
+
+        }
+      
+      
       }
       catch (Exception exception)
       {

@@ -24,5 +24,5 @@ CreateAccountButton.onclick = async function () {
   }
 
   localStorage.setItem("userToken", userToken);
-  location.href = "chat.html";
+  location.href = "/Lobby.html";
 };

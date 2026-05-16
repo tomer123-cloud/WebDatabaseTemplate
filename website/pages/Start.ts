@@ -2,20 +2,18 @@ import { send } from "clientUtilities";
 import { User } from "types";
 
 
-var token = localStorage.getItem("userToken");
+var userToken = localStorage.getItem("userToken");
+var user = await send<User | null>("getUser", userToken);
+var StartButton = document.querySelector<HTMLButtonElement>("#StartButton")!;
 
-var user = await send<User | null>("getUser", token);
-
-var CreateAccountButton = document.querySelector<HTMLButtonElement>("#CreateAccountButton")!;
 
 StartButton.onclick = async function ()
 {
-if (user != null) 
-{
-    location.href="../Lobby.html";
-}
+  if (user == null) 
+  {
+    location.href="/website/pages/LoginOrSignup.html";
+    return;
+  }
 
-else 
-{
-    location.href="../LoginOrSignup.html";
-}}
+  location.href = "/website/pages/Lobby.html";
+} 
