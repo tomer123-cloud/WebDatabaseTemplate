@@ -15,7 +15,7 @@
     <div id="BackgroundX">X</div>
 
     <!-- back button to the LoginOrSignUp page -->
-    <button id="BackButton">Back</button>
+    <button id="BackButton" onclick="location.href='/website/pages/Start.html'">Back</button>
 
     <!-- Main white sign up box -->
     <div id="HeadersContainer">
@@ -23,24 +23,30 @@
 
       <input id="UsernameInput" type="text" minlength="3" maxlength="12" placeholder="Choose Your Username">
 
-      <!-- type="password" hides the password while typing -->
-      <input id="PasswordInput" type="password" placeholder="Choose Your Password">
+      <!-- password input with eye image -->
+      <div class="PasswordInputContainer">
+        <input id="PasswordInput" type="password" placeholder="Choose Your Password">
+        <img id="PasswordEyeImg" class="EyeImg" src="../images/open_eye.png" draggable="false">
+      </div>
 
-      <!-- confirm password input -->
-      <input id="ConfirmPasswordInput" type="password" placeholder="Confirm Your Password">
+      <!-- confirm password input with eye image -->
+      <div class="PasswordInputContainer">
+        <input id="ConfirmPasswordInput" type="password" placeholder="Confirm Your Password">
+        <img id="ConfirmPasswordEyeImg" class="EyeImg" src="../images/open_eye.png" draggable="false">
+      </div>
 
-      <!-- Error messages. They are hidden now, and JavaScript can show the correct one later -->
+      <!-- Error message area -->
       <div id="ErrorDiv"></div>
 
-      <!-- create account button. It does not do anything yet -->
+      <!-- create account button -->
       <button id="CreateAccountButton">Create Account</button>
 
-      <!-- Login text. It looks clickable, but does not move to another page yet -->
+      <!-- Login text -->
       <p id="LoginText">
         Already have an account? <span id="LoginLink">Login</span>
       </p>
     </div>
 
-    <!-- <script src="index.js"></script> -->
+    <script type="module" src="Signup.js"></script>
   </body>
 </html>

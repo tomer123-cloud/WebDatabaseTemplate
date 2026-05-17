@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Project.DatabaseUtilities;
 using Project.LoggingUtilities;
 using Project.ServerUtilities;
@@ -60,7 +59,7 @@ class Program
 
           if (token == null)
           {
-            request.Respond<string?>(null);
+            request.Respond<User?>(null);
             continue;
           }
 
@@ -68,16 +67,10 @@ class Program
 
           request.Respond(user);
         }
-
-
         else if (request.Name == "Logout")
         {
-          User?user = null;
-          request.Respond(user);
-
+          request.Respond<User?>(null);
         }
-      
-      
       }
       catch (Exception exception)
       {
