@@ -71,7 +71,7 @@ body {
   gap: 18px; /* Space between the items inside the box */
 
   position: relative;
-  z-index: 1; /* Makes sure the white box is above the background X and O */
+
 }
 
 #SignUpHeader {

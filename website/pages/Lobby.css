@@ -6,7 +6,7 @@ body {
   background-color: #202124;
 
   font-family: "Tahoma", sans-serif;
-  overflow: hidden;
+
 }
 
 #TopFlexbox {
@@ -20,7 +20,8 @@ body {
 }
 
 #WelcomeUserDiv {
-  width: 12%;
+  /* width: 12%; */
+  padding: 0px 20px;
   height: 8%;
 
   background-color: #f4f1e8;
@@ -97,7 +98,14 @@ body {
 #HowToPlayButton:hover {
   background-color: #3b3b42;
   color: white;
-  border-color: #f0c94d;
+  border-color: #c4a746;
 
   box-shadow: 0px 0px 25px rgba(240, 201, 77, 0.55);
+}
+
+#CreateGame
+{
+width: 30px;
+display: flex;
+align-items: center;
 }

@@ -6,7 +6,6 @@ var userToken = localStorage.getItem("userToken");
 var user = await send<User | null>("getUser", userToken);
 var StartButton = document.querySelector<HTMLButtonElement>("#StartButton")!;
 
-
 StartButton.onclick = async function ()
 {
   if (user == null) 

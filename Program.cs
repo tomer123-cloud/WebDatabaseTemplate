@@ -71,6 +71,28 @@ class Program
         {
           request.Respond<User?>(null);
         }
+
+        else if(request.Name=="getGames")
+        {
+          request.Respond(database.Games);
+        }
+
+        else if(request.Name=="getGamesCount")
+        {
+          request.Respond(database.Games.Count());
+        }
+
+        else if (request.Name=="addGame")
+        {
+          var (token, GameName) = request.GetParams<(string, string)>();
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token)!;
+
+          var game = new Game(GameName, user.Id);
+          database.Games.Add(game);
+          database.SaveChanges();
+        }
+
+
       }
       catch (Exception exception)
       {
@@ -84,6 +106,7 @@ class Program
 class Database() : DatabaseCore("database")
 {
   public DbSet<User> Users { get; set; } = default!;
+  public DbSet<Game> Games { get; set; } = default!;
 }
 
 class User(string username, string password, string userToken)
@@ -95,4 +118,13 @@ class User(string username, string password, string userToken)
   [JsonIgnore] public string Password { get; set; } = password;
 
   [JsonIgnore] public string UserToken { get; set; } = userToken;
+}
+
+
+class Game(string gameName,int userId )
+{
+  public int Id {get;set;}=default!;
+  public int UserId { get; set; } = userId;
+  public User Username {get;set;} =default!;
+  public string GameName {get;set;} =gameName!;
 }
