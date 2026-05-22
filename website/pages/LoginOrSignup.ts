@@ -1,24 +1,26 @@
 import { send } from "clientUtilities";
-import { User } from "types";
-
+import type { User } from "types";
 
 var SignUpButton = document.querySelector<HTMLButtonElement>("#SignUpButton")!;
 var LoginButton = document.querySelector<HTMLButtonElement>("#LoginButton")!;
 var userToken = localStorage.getItem("userToken");
-var user = await send <User | null>("getUser",userToken);
+var user = await send<User | null>("getUser", userToken);
 
-if (user != null )
+if (user != null)
 {
   location.href = "/website/pages/Lobby.html";
+}
+else
+{
+  localStorage.removeItem("userToken");
 }
 
 SignUpButton.onclick = async function () 
 {
-    location.href = "/website/pages/Signup.html";
-}
-
+  location.href = "/website/pages/Signup.html";
+};
 
 LoginButton.onclick = async function () 
 {
-    location.href = "/website/pages/Login.html";
-}
+  location.href = "/website/pages/Login.html";
+};

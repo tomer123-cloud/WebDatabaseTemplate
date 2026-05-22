@@ -1,111 +1,363 @@
-body {
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-
-  background-color: #202124;
-
-  font-family: "Tahoma", sans-serif;
-
-}
-
-#TopFlexbox {
-  width: 100vw;
-  height: 100vh;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-#WelcomeUserDiv {
-  /* width: 12%; */
-  padding: 0px 20px;
-  height: 8%;
-
-  background-color: #f4f1e8;
-  border: 3px solid #d4af37;
-  border-radius: 20px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin-top: 2%;
-  margin-left: 1%;
-
-  font-size: 3vh;
-  font-weight: bold;
-  color: #202124;
-  user-select: none;
-
-  box-shadow: 0px 0px 22px rgba(212, 175, 55, 0.35);
-}
-
-#LogoutButton {
-  width: 8%;
-  height: 8%;
-
-  margin-top: 2%;
-  margin-left: 1%;
-
-  background-color: #2f2f35;
-  color: #f4f1e8;
-
-  border: 3px solid #ffffff;
-  border-radius: 20px;
-
-  font-size: 2.4vh;
-  font-weight: bold;
-
-  cursor: pointer;
-  transition: 0.22s;
-
-  box-shadow: 0px 0px 18px rgba(212, 175, 55, 0.25);
-}
-
-#LogoutButton:hover {
-  background-color: #3b3b42;
-  color: white;
-  border-color: #c4a746;
-
-  box-shadow: 0px 0px 25px rgba(240, 201, 77, 0.55);
-}
-
-#HowToPlayButton {
-  width: 13%;
-  height: 8%;
-
-  margin-top: 2%;
-  margin-left: 1%;
-
-  background-color: #2f2f35;
-  color: #f4f1e8;
-
-  border: 3px solid #ffffff;
-  border-radius: 20px;
-
-  font-size: 2.4vh;
-  font-weight: bold;
-
-  cursor: pointer;
-  transition: 0.22s;
-
-  box-shadow: 0px 0px 18px rgba(212, 175, 55, 0.25);
-}
-
-#HowToPlayButton:hover {
-  background-color: #3b3b42;
-  color: white;
-  border-color: #c4a746;
-
-  box-shadow: 0px 0px 25px rgba(240, 201, 77, 0.55);
-}
-
-#CreateGame
+body 
 {
-width: 30px;
-display: flex;
-align-items: center;
+  margin: 0; /* Removes the default space around the page */
+  width: 100vw; /* Makes the body as wide as the screen */
+  min-height: 100vh; /* Makes the body at least as tall as the screen */
+
+  background-color: #202124; /* Sets the dark page background */
+
+  font-family: "Tahoma", sans-serif; /* Sets the font for the whole page */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  overflow-y: auto; /* Allows vertical scrolling if needed */
+
+  display: flex; /* Uses flexbox for the page layout */
+  flex-direction: column; /* Places the top bar above the games area */
+}
+
+/* Top row */
+#TopFlexbox 
+{
+  width: 100vw; /* Makes the top row full screen width */
+  height: 12vh; /* Sets the height of the top row */
+
+  display: flex; /* Uses flexbox for the top row */
+  flex-direction: row; /* Places items next to each other */
+  justify-content: flex-start; /* Starts items from the left */
+  align-items: center; /* Centers items vertically */
+
+  gap: 1vw; /* Adds space between items */
+
+  padding-left: 1vw; /* Adds space from the left edge */
+  padding-right: 1vw; /* Adds space from the right edge */
+  box-sizing: border-box; /* Includes padding inside the width */
+}
+
+/* Welcome box */
+#WelcomeUserDiv 
+{
+  padding: 0vh 1.4vw; /* Adds horizontal space inside the box */
+  height: 8vh; /* Sets the height of the welcome box */
+
+  background-color: #f4f1e8; /* Sets the welcome box background */
+  border: 0.25vh solid #d4af37; /* Adds a gold border */
+  border-radius: 2vh; /* Rounds the corners */
+
+  display: flex; /* Uses flexbox inside the box */
+  justify-content: center; /* Centers text horizontally */
+  align-items: center; /* Centers text vertically */
+
+  font-size: 3vh; /* Sets the text size */
+  font-weight: bold; /* Makes the text bold */
+  color: #202124; /* Sets the text color */
+  user-select: none; /* Prevents selecting the text */
+
+  box-shadow: 0vh 0vh 2.2vh rgba(212, 175, 55, 0.35); /* Adds a soft gold glow */
+}
+
+/* Logout button */
+#LogoutButton 
+{
+  width: 8vw; /* Sets the button width */
+  height: 8vh; /* Sets the button height */
+
+  background-color: #2f2f35; /* Sets the button background */
+  color: #f4f1e8; /* Sets the button text color */
+
+  border: 0.25vh solid #ffffff; /* Adds a white border */
+  border-radius: 2vh; /* Rounds the button corners */
+
+  font-size: 2.4vh; /* Sets the button text size */
+  font-weight: bold; /* Makes the text bold */
+
+  cursor: pointer; /* Shows a hand cursor on hover */
+  transition: 0.22s; /* Makes hover changes smooth */
+
+  box-shadow: 0vh 0vh 1.8vh rgba(212, 175, 55, 0.25); /* Adds a small glow */
+}
+
+#LogoutButton:hover 
+{
+  background-color: #3b3b42; /* Changes background on hover */
+  color: white; /* Changes text color on hover */
+  border-color: #c4a746; /* Changes border color on hover */
+
+  box-shadow: 0vh 0vh 2.5vh rgba(240, 201, 77, 0.55); /* Adds stronger glow on hover */
+}
+
+/* How to play button */
+#HowToPlayButton 
+{
+  width: 13vw; /* Sets the button width */
+  height: 8vh; /* Sets the button height */
+
+  background-color: #2f2f35; /* Sets the button background */
+  color: #f4f1e8; /* Sets the button text color */
+
+  border: 0.25vh solid #ffffff; /* Adds a white border */
+  border-radius: 2vh; /* Rounds the button corners */
+
+  font-size: 2.4vh; /* Sets the button text size */
+  font-weight: bold; /* Makes the text bold */
+
+  cursor: pointer; /* Shows a hand cursor on hover */
+  transition: 0.22s; /* Makes hover changes smooth */
+
+  box-shadow: 0vh 0vh 1.8vh rgba(212, 175, 55, 0.25); /* Adds a small glow */
+}
+
+#HowToPlayButton:hover 
+{
+  background-color: #3b3b42; /* Changes background on hover */
+  color: white; /* Changes text color on hover */
+  border-color: #c4a746; /* Changes border color on hover */
+
+  box-shadow: 0vh 0vh 2.5vh rgba(240, 201, 77, 0.55); /* Adds stronger glow on hover */
+}
+
+/* New game button */
+#Create_Game_Button 
+{
+  width: 13vw; /* Sets the button width */
+  height: 8vh; /* Sets the button height */
+
+  margin-left: auto; /* Pushes this button to the right side of the top row */
+
+  background-color: #2f2f35; /* Sets the button background */
+  color: #f4f1e8; /* Sets the button text color */
+
+  border: 0.25vh solid #d4af37; /* Adds a gold border */
+  border-radius: 2vh; /* Rounds the button corners */
+
+  font-size: 2.4vh; /* Sets the button text size */
+  font-weight: bold; /* Makes the text bold */
+
+  cursor: pointer; /* Shows a hand cursor on hover */
+  transition: 0.22s; /* Makes hover changes smooth */
+
+  box-shadow: 0vh 0vh 1.8vh rgba(212, 175, 55, 0.3); /* Adds a small gold glow */
+}
+
+
+#Create_Game_Button:hover 
+{
+  background-color: #3b3b42; /* Changes background on hover */
+  color: white; /* Changes text color on hover */
+  border-color: #f0c94d; /* Changes border color on hover */
+
+  transform: translateY(-0.4vh); /* Moves the button slightly up on hover */
+  box-shadow: 0vh 0vh 2.5vh rgba(240, 201, 77, 0.55); /* Adds stronger glow on hover */
+}
+
+/* Games area */
+#GamesDiv 
+{
+  width: 100vw; /* Makes the games area full screen width */
+  min-height: 68vh; /* Sets the minimum height of the games area */
+
+  display: grid; /* Uses grid for balanced left and right spacing */
+  grid-template-columns: repeat(auto-fill, 15vw); /* Creates as many 15vw game columns as can fit */
+
+  justify-content: center; /* Centers the full grid so left and right spaces are equal */
+
+  direction: ltr; /* Makes the games start from left to right */
+
+  column-gap: 2vw; /* Adds horizontal space between game cards */
+  row-gap: 2vh; /* Adds vertical space between game rows */
+
+  padding-top: 2vh; /* Adds space below the top row */
+  padding-left: 3vw; /* Adds space from the left edge of the screen */
+  padding-right: 3vw; /* Adds space from the right edge of the screen */
+
+  box-sizing: border-box; /* Keeps padding inside the width */
+}
+
+/* Each game card created by TS */
+.GameDiv 
+{
+  width: 15vw; /* Sets each game card width */
+  height: 30vh; /* Sets each game card height */
+
+  background-color: #f4f1e8; /* Sets the card background */
+  border: 0.25vh solid #d4af37; /* Adds a gold border */
+  border-radius: 2.2vh; /* Rounds the card corners */
+
+  display: flex; /* Uses flexbox inside the card */
+  flex-direction: column; /* Places card items one under another */
+  justify-content: center; /* Centers card content vertically */
+  align-items: center; /* Centers card content horizontally */
+
+  gap: 2vh; /* Adds space between the image and the button */
+
+  direction: ltr; /* Keeps the content inside the card normal */
+  box-shadow: 0vh 0vh 2.2vh rgba(0, 0, 0, 0.45); /* Adds shadow around the card */
+  transition: 0.22s; /* Makes hover changes smooth */
+}
+
+.GameDiv:hover 
+{
+  transform: translateY(-0.5vh); /* Moves the card slightly up on hover */
+  box-shadow: 0vh 0vh 2.8vh rgba(212, 175, 55, 0.45); /* Adds stronger glow on hover */
+}
+
+/* Game board image */
+.GameImg 
+{
+  width: 9vw; /* Sets the image width */
+  height: 16vh; /* Sets the image height */
+
+  object-fit: contain; /* Keeps the image proportions */
+  user-select: none; /* Prevents selecting the image */
+  -webkit-user-drag: none; /* Prevents dragging the image */
+}
+
+/* Join button inside each game card */
+.GameButton 
+{
+  width: 9vw; /* Sets the join button width */
+  height: 5vh; /* Sets the join button height */
+
+  background-color: #2f2f35; /* Sets the button background */
+  color: #f4f1e8; /* Sets the button text color */
+
+  border: 0.25vh solid #d4af37; /* Adds a gold border */
+  border-radius: 1.4vh; /* Rounds the button corners */
+
+  font-size: 2vh; /* Sets the button text size */
+  font-weight: bold; /* Makes the button text bold */
+
+  cursor: pointer; /* Shows a hand cursor on hover */
+  transition: 0.22s; /* Makes hover changes smooth */
+}
+
+.GameButton::before 
+{
+  content: "Join"; /* Adds text inside the empty join button */
+}
+
+.GameButton:hover 
+{
+  background-color: #3b3b42; /* Changes background on hover */
+  color: white; /* Changes text color on hover */
+  border-color: #f0c94d; /* Changes border color on hover */
+}
+
+/* Add game box */
+#AddGameParent 
+{
+  width: 32vw; /* Sets the popup width */
+  height: 26vh; /* Sets the popup height */
+
+  background-color: #f4f1e8; /* Sets the popup background */
+  border: 0.25vh solid #d4af37; /* Adds a gold border */
+  border-radius: 2.4vh; /* Rounds the popup corners */
+
+  display: none; /* Hides the popup at the beginning */
+  flex-direction: column; /* Places popup items one under another */
+  justify-content: center; /* Centers popup items vertically */
+  align-items: center; /* Centers popup items horizontally */
+
+  gap: 2vh; /* Adds space between popup items */
+
+  position: fixed; /* Positions the popup based on the screen */
+  left: 50%; /* Moves popup to the horizontal center */
+  top: 50%; /* Moves popup to the vertical center */
+  transform: translate(-50%, -50%); /* Centers the popup exactly */
+
+  box-shadow: 0vh 0vh 3.5vh rgba(0, 0, 0, 0.65); /* Adds strong shadow around popup */
+}
+
+/* Input for game name */
+#GameNameInput 
+{
+  width: 23vw; /* Sets the input width */
+  height: 5.5vh; /* Sets the input height */
+
+  border: 0.2vh solid #202124; /* Adds a dark border */
+  border-radius: 1.4vh; /* Rounds the input corners */
+
+  font-size: 2vh; /* Sets the input text size */
+  text-align: center; /* Centers the input text */
+
+  outline: none; /* Removes the default browser outline */
+}
+
+#GameNameInput:focus 
+{
+  border-color: #d4af37; /* Changes border color when the input is active */
+  box-shadow: 0vh 0vh 1vh rgba(212, 175, 55, 0.5); /* Adds glow when typing */
+}
+
+/* Create button */
+#CreateButton 
+{
+  width: 11vw; /* Sets the create button width */
+  height: 5.3vh; /* Sets the create button height */
+
+  background-color: #2f2f35; /* Sets the button background */
+  color: #f4f1e8; /* Sets the button text color */
+
+  border: 0.25vh solid #d4af37; /* Adds a gold border */
+  border-radius: 1.4vh; /* Rounds the button corners */
+
+  font-size: 2vh; /* Sets the button text size */
+  font-weight: bold; /* Makes the button text bold */
+
+  cursor: pointer; /* Shows a hand cursor on hover */
+  transition: 0.22s; /* Makes hover changes smooth */
+}
+
+#CreateButton:hover 
+{
+  background-color: #3b3b42; /* Changes background on hover */
+  color: white; /* Changes text color on hover */
+  border-color: #f0c94d; /* Changes border color on hover */
+}
+
+/* Error message */
+#ErrorDiv 
+{
+  height: 2.5vh; /* Keeps space for the error message */
+
+  color: red; /* Sets error text color */
+  font-size: 1.8vh; /* Sets error text size */
+  font-weight: bold; /* Makes error text bold */
+  text-align: center; /* Centers error text */
+}
+
+/* Delete all games button */
+#delete_all_games 
+{
+  width: 220px; /* Sets the delete button width */
+  height: 55px; /* Sets the delete button height */
+
+  position: fixed; /* Makes the button ignore flexbox layout */
+  left: 50%; /* Moves the button to the middle of the screen */
+  bottom: 4%; /* Places the button near the bottom */
+  transform: translateX(-50%); /* Centers the button exactly */
+
+  z-index: 9999; /* Keeps the button above other elements */
+
+  background-color: #8b0000; /* Sets a dark red background */
+  color: white; /* Sets the text color */
+
+  border: 3px solid #ff3b3b; /* Adds a bright red border */
+  border-radius: 14px; /* Rounds the button corners */
+
+  font-size: 20px; /* Sets the text size */
+  font-weight: bold; /* Makes the text bold */
+
+  cursor: pointer; /* Shows a hand cursor on hover */
+  transition: 0.22s; /* Makes hover changes smooth */
+
+  box-shadow: 0px 0px 18px rgba(255, 0, 0, 0.45); /* Adds red glow */
+}
+
+#delete_all_games:hover 
+{
+  background-color: #b00000; /* Makes the button brighter red on hover */
+  border-color: #ff0000; /* Makes the border stronger red on hover */
+
+  transform: translateX(-50%) scale(1.05); /* Keeps the button centered and makes it bigger */
+
+  box-shadow: 0px 0px 28px rgba(255, 0, 0, 0.75); /* Adds stronger red glow on hover */
 }

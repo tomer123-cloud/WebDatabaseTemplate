@@ -35,6 +35,7 @@ class Program
 
           request.Respond(user?.UserToken);
         }
+
         else if (request.Name == "Signup")
         {
           var (username, password) = request.GetParams<(string, string)>();
@@ -53,6 +54,7 @@ class Program
 
           request.Respond(token);
         }
+
         else if (request.Name == "getUser")
         {
           var token = request.GetParams<string?>();
@@ -67,33 +69,98 @@ class Program
 
           request.Respond(user);
         }
+
         else if (request.Name == "Logout")
         {
           request.Respond<User?>(null);
         }
 
-        else if(request.Name=="getGames")
+        else if (request.Name == "getGames")
         {
-          request.Respond(database.Games);
+          request.Respond(database.Games.Include(g => g.User));
         }
 
-        else if(request.Name=="getGamesCount")
+        else if (request.Name == "getGamesCount")
         {
           request.Respond(database.Games.Count());
         }
 
-        else if (request.Name=="addGame")
+        else if (request.Name == "canCreateGame")
         {
-          var (token, GameName) = request.GetParams<(string, string)>();
-          var user = database.Users.FirstOrDefault(u => u.UserToken == token)!;
+          var (token, GameName) = request.GetParams<(string?, string)>();
 
-          var game = new Game(GameName, user.Id);
-          database.Games.Add(game);
-          database.SaveChanges();
+          GameName = GameName.Trim();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          if (GameName.Length == 0)
+          {
+            request.Respond("GameNameEmpty");
+            continue;
+          }
+
+          var lowerGameName = GameName.ToLower();
+
+          if (database.Games.Any(g => g.GameName.ToLower() == lowerGameName))
+          {
+            request.Respond("GameNameExists");
+            continue;
+          }
+
+          request.Respond("CanCreateGame");
         }
 
+        else if (request.Name == "addGame")
+        {
+          var (token, GameName) = request.GetParams<(string?, string)>();
 
+          GameName = GameName.Trim();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          if (GameName.Length == 0)
+          {
+            request.Respond("GameNameEmpty");
+            continue;
+          }
+
+          var lowerGameName = GameName.ToLower();
+
+          if (database.Games.Any(g => g.GameName.ToLower() == lowerGameName))
+          {
+            request.Respond("GameNameExists");
+            continue;
+          }
+
+          var game = new Game(GameName, user.Id);
+
+          database.Games.Add(game);
+          database.SaveChanges();
+
+          request.Respond("GameCreated");
+        }
+
+        else if (request.Name == "clearGames")
+        {
+          database.Games.RemoveRange(database.Games);
+          database.SaveChanges();
+
+          request.Respond(true);
+        }
       }
+
       catch (Exception exception)
       {
         request.SetStatusCode(500);
@@ -120,11 +187,12 @@ class User(string username, string password, string userToken)
   [JsonIgnore] public string UserToken { get; set; } = userToken;
 }
 
-
-class Game(string gameName,int userId )
+class Game(string gameName, int userId)
 {
-  public int Id {get;set;}=default!;
+  public int Id { get; set; } = default!;
+  public string GameName { get; set; } = gameName;
   public int UserId { get; set; } = userId;
-  public User Username {get;set;} =default!;
-  public string GameName {get;set;} =gameName!;
+  public User User { get; set; } = default!;
+  public int Player1Id { get; set; } = userId;
+  public int? Player2Id { get; set; } = null;
 }
