@@ -172,7 +172,7 @@ body
 }
 
 /* Each game card created by TS */
-.GameDiv 
+.GameButton 
 {
   width: 15vw; /* Sets each game card width */
   height: 30vh; /* Sets each game card height */
@@ -191,9 +191,11 @@ body
   direction: ltr; /* Keeps the content inside the card normal */
   box-shadow: 0vh 0vh 2.2vh rgba(0, 0, 0, 0.45); /* Adds shadow around the card */
   transition: 0.22s; /* Makes hover changes smooth */
+
+  cursor: pointer; /* Shows a hand cursor on hover */
 }
 
-.GameDiv:hover 
+.GameButton:hover 
 {
   transform: translateY(-0.5vh); /* Moves the card slightly up on hover */
   box-shadow: 0vh 0vh 2.8vh rgba(212, 175, 55, 0.45); /* Adds stronger glow on hover */
@@ -211,10 +213,12 @@ body
 }
 
 /* Join button inside each game card */
-.GameButton 
+.JoinGameDiv 
 {
   width: 9vw; /* Sets the join button width */
   height: 5vh; /* Sets the join button height */
+
+  margin-bottom: 1vh;/* Moves the join div slightly upward */ 
 
   background-color: #2f2f35; /* Sets the button background */
   color: #f4f1e8; /* Sets the button text color */
@@ -222,24 +226,19 @@ body
   border: 0.25vh solid #d4af37; /* Adds a gold border */
   border-radius: 1.4vh; /* Rounds the button corners */
 
-  font-size: 2vh; /* Sets the button text size */
-  font-weight: bold; /* Makes the button text bold */
+  font-size: 2vh; /* Sets the text size */
+  font-weight: bold; /* Makes the text bold */
 
-  cursor: pointer; /* Shows a hand cursor on hover */
   transition: 0.22s; /* Makes hover changes smooth */
+
+  display: flex; /* Uses flexbox inside the div */
+  justify-content: center; /* Centers the text horizontally */
+  align-items: center; /* Centers the text vertically */
 }
 
-.GameButton::before 
-{
-  content: "Join"; /* Adds text inside the empty join button */
-}
 
-.GameButton:hover 
-{
-  background-color: #3b3b42; /* Changes background on hover */
-  color: white; /* Changes text color on hover */
-  border-color: #f0c94d; /* Changes border color on hover */
-}
+
+
 
 /* Add game box */
 #AddGameParent 
@@ -360,4 +359,95 @@ body
   transform: translateX(-50%) scale(1.05); /* Keeps the button centered and makes it bigger */
 
   box-shadow: 0px 0px 28px rgba(255, 0, 0, 0.75); /* Adds stronger red glow on hover */
+}
+
+
+#Close_AddGameDiv_Button {
+  width: 4vh;
+  height: 4vh;
+
+  position: absolute;
+  top: 1.2vh;
+  right: 1.2vh;
+
+  background-color: #8b0000;
+  color: white;
+
+  border: 0.25vh solid #ff3b3b;
+  border-radius: 50%;
+
+  padding: 0;
+  box-sizing: border-box;
+
+  font-size: 2.8vh;
+  font-weight: bold;
+  line-height: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  transition: 0.22s;
+
+  box-shadow: 0vh 0vh 1.2vh rgba(255, 0, 0, 0.45);
+}
+
+#Close_AddGameDiv_Button::before {
+  content: "x";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  line-height: 1;
+  transform: translateY(-0.15vh);
+}
+
+#Close_AddGameDiv_Button:hover {
+  background-color: #b00000;
+  border-color: #ff0000;
+
+  transform: scale(1.08);
+
+  box-shadow: 0vh 0vh 1.8vh rgba(255, 0, 0, 0.75);
+}
+
+.GameName 
+{
+  width: 90%; /* Makes the game name take most of the card width */
+
+  color: #2f2f35; /* Dark gray color that matches the website */
+  font-size: 2.8vh; /* Makes the game name large and noticeable */
+  font-weight: bold; /* Makes the game name bold */
+
+  text-align: center; /* Centers the text */
+  user-select: none; /* Prevents selecting the text */
+
+  margin-top: 0.8vh; /* Adds small space above the lobby name */
+  margin-bottom: 0.4vh; /* Adds small space under the lobby name */
+
+  padding-bottom: 0.7vh; /* Adds space above the underline */
+
+  border-bottom: 0.25vh solid #d4af37; /* Adds a gold line under the game name */
+
+  text-shadow: 0vh 0vh 0.6vh rgba(212, 175, 55, 0.25); /* Adds a soft gold glow */
+}
+
+.Lobby_Creator_Username 
+{
+  width: 90%; /* Makes the creator name take most of the card width */
+
+  color: #8c6f1f; /* Softer gold-brown color */
+  font-size: 1.8vh; /* Smaller than the game name */
+  font-weight: bold; /* Still makes it readable */
+
+  text-align: center; /* Centers the text */
+  user-select: none; /* Prevents selecting the text */
+
+  margin-top: -2.5vh; /* Adds small space above the creator name */
+
+  opacity: 0.95; /* Keeps it visible but less strong than the title */
 }
