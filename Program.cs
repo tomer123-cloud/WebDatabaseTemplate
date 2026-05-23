@@ -72,12 +72,27 @@ class Program
 
         else if (request.Name == "Logout")
         {
+          var token = request.GetParams<string?>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user != null)
+          {
+            var games = database.Games.Where(g => g.UserId == user.Id).ToList();
+
+            if (games.Count > 0)
+            {
+              database.Games.RemoveRange(games);
+              database.SaveChanges();
+            }
+          }
+
           request.Respond<User?>(null);
         }
 
         else if (request.Name == "getGames")
         {
-          request.Respond(database.Games.Include(g => g.User));
+          request.Respond(database.Games.Include(g => g.User).OrderBy(g => g.Id));
         }
 
         else if (request.Name == "getGamesCount")
@@ -126,13 +141,13 @@ class Program
 
           if (user == null)
           {
-            request.Respond("UserNotFound");
+            request.Respond<int?>(null);
             continue;
           }
 
           if (GameName.Length == 0)
           {
-            request.Respond("GameNameEmpty");
+            request.Respond<int?>(null);
             continue;
           }
 
@@ -140,7 +155,7 @@ class Program
 
           if (database.Games.Any(g => g.GameName.ToLower() == lowerGameName))
           {
-            request.Respond("GameNameExists");
+            request.Respond<int?>(null);
             continue;
           }
 
@@ -149,7 +164,33 @@ class Program
           database.Games.Add(game);
           database.SaveChanges();
 
-          request.Respond("GameCreated");
+          request.Respond<int?>(game.Id);
+        }
+
+        else if (request.Name == "deleteMyGame")
+        {
+          var token = request.GetParams<string?>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var games = database.Games.Where(g => g.UserId == user.Id).ToList();
+
+          if (games.Count == 0)
+          {
+            request.Respond("NoGameFound");
+            continue;
+          }
+
+          database.Games.RemoveRange(games);
+          database.SaveChanges();
+
+          request.Respond("GameDeleted");
         }
 
         else if (request.Name == "clearGames")
@@ -159,7 +200,6 @@ class Program
 
           request.Respond(true);
         }
-        
       }
 
       catch (Exception exception)
@@ -191,9 +231,14 @@ class User(string username, string password, string userToken)
 class Game(string gameName, int userId)
 {
   public int Id { get; set; } = default!;
+
   public string GameName { get; set; } = gameName;
+
   public int UserId { get; set; } = userId;
+
   public User User { get; set; } = default!;
+
   public int Player1Id { get; set; } = userId;
+
   public int? Player2Id { get; set; } = null;
 }

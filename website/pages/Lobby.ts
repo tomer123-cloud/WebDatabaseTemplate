@@ -1,6 +1,6 @@
 import { send } from "clientUtilities";
 import { create } from "componentUtilities";
-import type { User } from "types";
+import type { User, Game } from "types";
 
 var WelcomeUserDiv = document.querySelector<HTMLElement>("#WelcomeUserDiv")!;
 var LogoutButton = document.querySelector<HTMLButtonElement>("#LogoutButton")!;
@@ -19,20 +19,26 @@ async function LoadGames()
 {
   GamesDiv.innerHTML = "";
 
-  var games = await send<any[]>("getGames");
+  var games = await send<Game[]>("getGames");
 
-  for (var game of games)
+  for (let game of games)
   {
     var gameDiv = create("button", { className: "GameButton" });
+
     var GameName = game.gameName;
     var Lobby_Creator_Username = game.user.username + "'s Game";
+
     gameDiv.append(
-      create("div",{className: "GameName", innerText:GameName}),
-      create("img", { className: "GameImg", src:"../images/Warrior_O_VS_X_YellowBackground.png" }),
-      create("div",{className:"Lobby_Creator_Username",innerText: Lobby_Creator_Username}),
-      create("div", { className: "JoinGameDiv", innerText:"Join" })
-      
+      create("div", { className: "GameName", innerText: GameName }),
+      create("img", { className: "GameImg", src: "../images/Warrior_O_VS_X_YellowBackground.png" }),
+      create("div", { className: "Lobby_Creator_Username", innerText: Lobby_Creator_Username }),
+      create("div", { className: "JoinGameDiv", innerText: "Join" })
     );
+
+    gameDiv.onclick = function ()
+    {
+      location.href = "/website/pages/Game.html?gameId=" + game.id;
+    };
 
     GamesDiv.append(gameDiv);
   }
@@ -48,7 +54,7 @@ else
 
   LogoutButton.onclick = async function ()
   {
-    user = await send<User | null>("Logout");
+    user = await send<User | null>("Logout", userToken);
 
     if (user == null)
     {
@@ -81,7 +87,6 @@ else
     }
 
     var canCreateGame = await send<string>("canCreateGame", userToken, GameName);
-    console.log(canCreateGame);
 
     if (canCreateGame == "UserNotFound")
     {
@@ -111,32 +116,23 @@ else
     GameNameInput.value = "";
     AddGameParent.style.display = "none";
 
-    var addGameResult = await send<string>("addGame", userToken, GameName);
-    console.log(addGameResult);
-    if (addGameResult == "GameNameExists")
-    {
-      AddGameParent.style.display = "flex";
-      ErrorDiv.innerText = "A Lobby with this name already exists.";
-      return;
-    }
+    var newGameId = await send<number | null>("addGame", userToken, GameName);
 
-    if (addGameResult != "GameCreated")
+    if (newGameId == null)
     {
       AddGameParent.style.display = "flex";
       ErrorDiv.innerText = "Something went wrong.";
       return;
     }
 
-    await LoadGames();
+    location.href = "/website/pages/Game.html?gameId=" + newGameId;
+  };
 
-    GamesCount = await send<number>("getGamesCount");
-  }; 
-
-  CloseButton.onclick = async function () {
+  CloseButton.onclick = async function () 
+  {
+    ErrorDiv.innerText = "";
     AddGameParent.style.display = "none";
-  }
-
-
+  };
 
   delete_all_games.onclick = async function ()
   {
@@ -149,6 +145,7 @@ else
   };
 
   await LoadGames();
+
   GamesCount = await send<number>("getGamesCount");
 
   setInterval(async function ()

@@ -69,6 +69,7 @@ body
   font-size: 2.4vh; /* Sets the button text size */
   font-weight: bold; /* Makes the text bold */
 
+  user-select: none; /* Prevents selecting the text */
   cursor: pointer; /* Shows a hand cursor on hover */
   transition: 0.22s; /* Makes hover changes smooth */
 
@@ -99,6 +100,7 @@ body
   font-size: 2.4vh; /* Sets the button text size */
   font-weight: bold; /* Makes the text bold */
 
+  user-select: none; /* Prevents selecting the text */
   cursor: pointer; /* Shows a hand cursor on hover */
   transition: 0.22s; /* Makes hover changes smooth */
 
@@ -131,6 +133,7 @@ body
   font-size: 2.4vh; /* Sets the button text size */
   font-weight: bold; /* Makes the text bold */
 
+  user-select: none; /* Prevents selecting the text */
   cursor: pointer; /* Shows a hand cursor on hover */
   transition: 0.22s; /* Makes hover changes smooth */
 
@@ -234,6 +237,7 @@ body
   display: flex; /* Uses flexbox inside the div */
   justify-content: center; /* Centers the text horizontally */
   align-items: center; /* Centers the text vertically */
+  user-select: none; /* Prevents selecting the text */
 }
 
 
@@ -278,6 +282,7 @@ body
   text-align: center; /* Centers the input text */
 
   outline: none; /* Removes the default browser outline */
+  user-select: none; /* Prevents selecting the text */
 }
 
 #GameNameInput:focus 
@@ -303,6 +308,7 @@ body
 
   cursor: pointer; /* Shows a hand cursor on hover */
   transition: 0.22s; /* Makes hover changes smooth */
+  user-select: none; /* Prevents selecting the text */
 }
 
 #CreateButton:hover 
@@ -321,6 +327,7 @@ body
   font-size: 1.8vh; /* Sets error text size */
   font-weight: bold; /* Makes error text bold */
   text-align: center; /* Centers error text */
+  user-select: none; /* Prevents selecting the text */
 }
 
 /* Delete all games button */
@@ -445,7 +452,6 @@ body
   font-weight: bold; /* Still makes it readable */
 
   text-align: center; /* Centers the text */
-  user-select: none; /* Prevents selecting the text */
 
   margin-top: -2.5vh; /* Adds small space above the creator name */
 
