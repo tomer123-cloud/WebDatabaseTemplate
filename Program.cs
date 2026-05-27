@@ -11,6 +11,7 @@ class Program
   static void Main()
   {
     GameState[] gameStates = [];
+    
 
     int port = 5000;
 
@@ -24,6 +25,7 @@ class Program
     while (true)
     {
       var request = server.WaitForRequest();
+      
 
       Console.WriteLine($"Received a request: {request.Name}");
 
@@ -166,6 +168,7 @@ class Program
           database.Games.Add(game);
           database.SaveChanges();
 
+          gameStates[game.Id] = new GameState(game.Id);
           gameStates.Append(new GameState(database.Games.Last().Id));
 
           request.Respond<int?>(database.Games.Last().Id);
@@ -199,7 +202,43 @@ class Program
 
         else if (request.Name == "boardState")
         {
+          var gameId = request.GetParams<int>();
 
+          var board = gameStates[gameId]!.Board;
+
+          request.Respond(board);
+        }
+
+        else if (request.Name == "makeMove")
+        {
+          var (token, gameId, y, x ) = request.GetParams<(string?, int, int, int)>();
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+          var UserSymbol = 'N'; // N = Not Defined
+          if (game?.Player1Id == user?.Id)
+          {
+            UserSymbol = 'X';
+          }
+          else if(game?.Player2Id == user?.Id)
+          {
+            UserSymbol = 'O';
+          }
+          else 
+          {
+          request.Respond("NotYourGame");
+          continue;
+          }
+          
+          if (gameStates[gameId]!.Board[y, x] == 'X' || gameStates[gameId]!.Board[y, x] == 'O')
+          {
+            request.Respond("CantChangeExistingMoves");
+            continue;
+          }
+          else
+          {
+            gameStates[gameId]!.Board[y, x] = UserSymbol;
+            request.Respond("MoveCompleted");
+          }
         }
 
         else if (request.Name == "clearGames")
@@ -255,20 +294,20 @@ class Game(string gameName, int userId)
 
 class GameState
 {
-  int GameId { get; set; }
-  string[,] Board { get; set; }
+  public int GameId { get; set; }
+ public char[,] Board { get; set; }
 
   public GameState(int gameId)
   {
     GameId = gameId;
 
-    Board = new string[3, 3];
+    Board = new char[3, 3];
 
     for (int y = 0; y < Board.GetLength(0); y++)
     {
       for (int x = 0; x < Board.GetLength(1); x++)
       {
-        Board[y, x] = "E";
+        Board[y, x] = 'E'; // E = empty
       }
     }
   }
