@@ -1,0 +1,47 @@
+
+body
+{
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+#CenterFlexBox
+{
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 0vh;
+}
+
+#Board
+{
+  margin-top:10vh ;
+  width: 100vw;
+  height: auto;
+
+  max-width: none;
+  max-height: none;
+
+  object-fit: contain;
+
+  transform: scale(1.25);
+
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+
+#Pole1
+{
+    width: 2vw;
+    height: 100vh;
+    background-color: black;
+    margin-right: ;
+}

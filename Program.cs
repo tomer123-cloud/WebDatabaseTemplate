@@ -10,6 +10,8 @@ class Program
 {
   static void Main()
   {
+    GameState[] gameStates = [];
+
     int port = 5000;
 
     var server = new Server(port);
@@ -164,7 +166,9 @@ class Program
           database.Games.Add(game);
           database.SaveChanges();
 
-          request.Respond<int?>(game.Id);
+          gameStates.Append(new GameState(database.Games.Last().Id));
+
+          request.Respond<int?>(database.Games.Last().Id);
         }
 
         else if (request.Name == "deleteMyGame")
@@ -191,6 +195,11 @@ class Program
           database.SaveChanges();
 
           request.Respond("GameDeleted");
+        }
+
+        else if (request.Name == "boardState")
+        {
+
         }
 
         else if (request.Name == "clearGames")
@@ -241,4 +250,27 @@ class Game(string gameName, int userId)
   public int Player1Id { get; set; } = userId;
 
   public int? Player2Id { get; set; } = null;
+}
+
+
+class GameState
+{
+  int GameId { get; set; }
+  string[,] Board { get; set; }
+
+  public GameState(int gameId)
+  {
+    GameId = gameId;
+
+    Board = new string[3, 3];
+
+    for (int y = 0; y < Board.GetLength(0); y++)
+    {
+      for (int x = 0; x < Board.GetLength(1); x++)
+      {
+        Board[y, x] = "E";
+      }
+    }
+  }
+
 }

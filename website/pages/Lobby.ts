@@ -121,7 +121,7 @@ else
     if (newGameId == null)
     {
       AddGameParent.style.display = "flex";
-      ErrorDiv.innerText = "Something went wrong.";
+      ErrorDiv.innerText = "Something went wrong, please refresh the page and try again.";
       return;
     }
 
