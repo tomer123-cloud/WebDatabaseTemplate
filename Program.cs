@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ class Program
 {
   static void Main()
   {
-    GameState[] gameStates = [];
+    Dictionary<int, GameState> gameStates = [];
     
 
     int port = 5000;
@@ -108,7 +109,7 @@ class Program
         {
           var (token, GameName) = request.GetParams<(string?, string)>();
 
-          GameName = GameName.Trim();
+          GameName = GameName.Trim();//
 
           var user = database.Users.FirstOrDefault(u => u.UserToken == token);
 
@@ -168,10 +169,9 @@ class Program
           database.Games.Add(game);
           database.SaveChanges();
 
-          gameStates[game.Id] = new GameState(game.Id);
-          gameStates.Append(new GameState(database.Games.Last().Id));
+          gameStates.Add(game.Id, new GameState());
 
-          request.Respond<int?>(database.Games.Last().Id);
+          request.Respond<int?>(game.Id);
         }
 
         else if (request.Name == "deleteMyGame")
@@ -297,10 +297,8 @@ class GameState
   public int GameId { get; set; }
  public char[,] Board { get; set; }
 
-  public GameState(int gameId)
+  public GameState()
   {
-    GameId = gameId;
-
     Board = new char[3, 3];
 
     for (int y = 0; y < Board.GetLength(0); y++)

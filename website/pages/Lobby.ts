@@ -106,17 +106,18 @@ else
       return;
     }
 
-    if (canCreateGame != "CanCreateGame")
-    {
-      ErrorDiv.innerText = "Something went wrong.";
-      return;
-    }
+    // if (canCreateGame != "CanCreateGame")
+    // {
+    //   ErrorDiv.innerText = "Something went wrong.";
+    //   return;
+    // }
 
     ErrorDiv.innerText = "";
     GameNameInput.value = "";
     AddGameParent.style.display = "none";
 
     var newGameId = await send<number | null>("addGame", userToken, GameName);
+    console.log(newGameId);
 
     if (newGameId == null)
     {
