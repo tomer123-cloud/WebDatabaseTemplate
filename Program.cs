@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Project.DatabaseUtilities;
@@ -12,12 +13,14 @@ class Program
   static void Main()
   {
     Dictionary<int, GameState> gameStates = [];
-    
+
 
     int port = 5000;
 
     var server = new Server(port);
     var database = new Database();
+    database.Games.RemoveRange(database.Games);
+    database.SaveChanges();
 
     Console.WriteLine("The server is running");
     Console.WriteLine($"Local:   http://localhost:{port}/website/pages/Start.html");
@@ -26,7 +29,7 @@ class Program
     while (true)
     {
       var request = server.WaitForRequest();
-      
+
 
       Console.WriteLine($"Received a request: {request.Name}");
 
@@ -170,7 +173,7 @@ class Program
           database.SaveChanges();
 
           gameStates.Add(game.Id, new GameState());
-
+          Console.WriteLine(game.Id);
           request.Respond<int?>(game.Id);
         }
 
@@ -211,7 +214,7 @@ class Program
 
         else if (request.Name == "makeMove")
         {
-          var (token, gameId, y, x ) = request.GetParams<(string?, int, int, int)>();
+          var (token, gameId, y, x) = request.GetParams<(string?, int, int, int)>();
           var user = database.Users.FirstOrDefault(u => u.UserToken == token);
           var game = database.Games.FirstOrDefault(g => g.Id == gameId);
           var UserSymbol = 'N'; // N = Not Defined
@@ -219,25 +222,90 @@ class Program
           {
             UserSymbol = 'X';
           }
-          else if(game?.Player2Id == user?.Id)
+          else if (game?.Player2Id == user?.Id)
           {
             UserSymbol = 'O';
           }
-          else 
+          else
           {
-          request.Respond("NotYourGame");
-          continue;
+            request.Respond("NotYourGame");
+            continue;
           }
-          
-          if (gameStates[gameId]!.Board[y, x] == 'X' || gameStates[gameId]!.Board[y, x] == 'O')
+
+          if (gameStates[gameId]!.Board[y*3+x] == 'X' || gameStates[gameId]!.Board[y*3+x] == 'O')
           {
             request.Respond("CantChangeExistingMoves");
             continue;
           }
           else
           {
-            gameStates[gameId]!.Board[y, x] = UserSymbol;
+            gameStates[gameId]!.Board[y*3+x] = UserSymbol;
             request.Respond("MoveCompleted");
+          }
+        }
+
+        else if (request.Name == "currentTurn")
+        {
+
+          var (token, gameId) = request.GetParams<(string, int)>();
+          var board = gameStates[gameId].Board;
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+          var UserSymbol = 'N'; // N = Not Defined
+
+          var xSum = 0;
+          var oSum = 0;
+
+          if (game?.Player1Id == user?.Id)
+          {
+            UserSymbol = 'X';
+          }
+          else if (game?.Player2Id == user?.Id)
+          {
+            UserSymbol = 'O';
+          }
+          else
+          {
+            request.Respond("NotYourGame");
+            continue;
+          }
+
+          for (var i = 0; i < gameStates[gameId].Board.GetLength(0); i++)
+          {
+            for (var j = 0; j < gameStates[gameId].Board.GetLength(0); j++)
+            {
+              if (board[i*3+j] == 'X')
+              {
+                xSum++;
+              }
+
+              if (board[i*3+j] == 'O')
+              {
+                oSum++;
+              }
+            }
+            if (xSum == oSum)
+            {
+              if(UserSymbol == 'X')
+              {
+                request.Respond("YourTurn");
+              }
+              else
+              {
+                request.Respond("OpponetTurn");
+              }
+            }
+            else
+            {
+              if (UserSymbol == 'X')
+              {
+                request.Respond("OpponetTurn");
+              }
+              else
+              {
+                request.Respond("YourTurn");
+              }
+            }
           }
         }
 
@@ -263,7 +331,9 @@ class Database() : DatabaseCore("database")
 {
   public DbSet<User> Users { get; set; } = default!;
   public DbSet<Game> Games { get; set; } = default!;
+  
 }
+
 
 class User(string username, string password, string userToken)
 {
@@ -295,17 +365,17 @@ class Game(string gameName, int userId)
 class GameState
 {
   public int GameId { get; set; }
- public char[,] Board { get; set; }
+  public char[] Board { get; set; }
 
   public GameState()
   {
-    Board = new char[3, 3];
+    Board = new char[9];
 
-    for (int y = 0; y < Board.GetLength(0); y++)
+    for (int y = 0; y < 3; y++)
     {
-      for (int x = 0; x < Board.GetLength(1); x++)
+      for (int x = 0; x < 3; x++)
       {
-        Board[y, x] = 'E'; // E = empty
+        Board[y*3+x] = 'E'; // E = empty
       }
     }
   }

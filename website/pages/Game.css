@@ -1,47 +1,147 @@
 
-body
+
+body 
 {
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  margin: 0; /* Removes default page margin */
+
+  width: 100vw; /* Makes the body full screen width */
+  height: 100vh; /* Makes the body full screen height */
+
+  background-color: #202124; /* Sets the dark background */
+  font-family: "Tahoma", sans-serif; /* Sets the page font */
+
+  overflow: hidden; /* Prevents scrolling */
+}
+
+#GamePageDiv 
+{
+  width: 100vw; /* Makes the page area full screen width */
+  height: 100vh; /* Makes the page area full screen height */
+
+  display: flex; /* Uses flexbox */
+  justify-content: center; /* Centers the board horizontally */
+  align-items: center; /* Centers the board vertically */
+}
+
+/* The full board area */
+#BoardDiv 
+{
+  width: 205vmin; /* Controls the full board area width */
+  height: 90vmin; /* Controls the full board area height */
+
+  position: relative; /* Allows each button to be positioned inside the board */
+
+  top: 4vh; /* Moves the whole board slightly down */
+
+  background-image: url("../images/empty_TicTacToe_board.png"); /* Board image */
+  background-size: 130% 130%; /* Controls the board image zoom */
+  background-repeat: no-repeat; /* Prevents image repetition */
+  background-position: center; /* Centers the board image */
+}
+
+/* Same design for all board buttons */
+.BoardCell 
+{
+  position: absolute; /* Allows exact positioning for each button */
+
+  width: 15.2%; /* Controls the width of all buttons */
+  height: 28%; /* Controls the height of all buttons */
+
+  background-color: transparent; /* Makes the button invisible */
+  border: none; /* Removes the button border */
+
+  color: #f4f1e8; /* Sets the X/O color */
+  font-size: 11vmin; /* Controls the X/O size */
+  font-weight: bold; /* Makes X/O bold */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Adds shadow to X/O */
+
+  display: flex; /* Uses flexbox inside the button */
+  justify-content: center; /* Centers X/O horizontally */
+  align-items: center; /* Centers X/O vertically */
+
+  cursor: pointer; /* Shows the hand cursor */
+  user-select: none; /* Prevents selecting text */
+
+  padding: 0; /* Removes default button padding */
+  outline: none; /* Removes default focus outline */
+
+
+  color: #f4f1e8;
+  font-size: 100px;
+  font-weight: bold;
+  font-family: "Tahoma", sans-serif;
+  text-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.65);
 }
 
 
-#CenterFlexBox
+.BoardCell:hover 
 {
-  width: 100vw;
-  height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  gap: 0vh;
-}
-
-#Board
-{
-  margin-top:10vh ;
-  width: 100vw;
-  height: auto;
-
-  max-width: none;
-  max-height: none;
-
-  object-fit: contain;
-
-  transform: scale(1.25);
-
-  -webkit-user-drag: none;
-  user-select: none;
+  background-color: rgba(212, 175, 55, 0.15); /* Shows a soft gold hover effect */
 }
 
 
-#Pole1
+/* ===== Exact position of each cell ===== */
+
+/* Top row */
+#Cell00 
 {
-    width: 2vw;
-    height: 100vh;
-    background-color: black;
-    margin: right 20%; ;
+  left: 27%;
+  top: 2%;
+}
+
+#Cell01 
+{
+  left: 42.2%;
+  top: 2%;
+  width:16.3%;
+}
+
+#Cell02 
+{
+  left: 58.5%;
+  top: 2%;
+}
+
+/* Middle row */
+#Cell10 
+{
+  left: 27%;
+  top: 30%;
+  height:31.5%;
+}
+
+#Cell11 
+{
+  left: 42.2%;
+  top: 30.5%;
+  width:16.4%;
+  height:31%;
+
+}
+
+#Cell12 
+{
+  left: 58.5%;
+  top: 30%;
+  height:31.5%;
+}
+
+/* Bottom row */
+#Cell20 
+{
+  left: 27%;
+  top: 61.5%;
+}
+
+#Cell21 
+{
+  left: 42.2%;
+  width:16.3%;
+  top: 61.5%;
+}
+
+#Cell22 
+{
+  left: 58.5%;
+  top: 61.5%;
 }
