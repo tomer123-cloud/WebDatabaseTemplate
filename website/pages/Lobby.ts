@@ -13,6 +13,7 @@ var ErrorDiv = document.querySelector<HTMLElement>("#ErrorDiv")!;
 var AddGameParent = document.querySelector<HTMLElement>("#AddGameParent")!;
 var CloseButton = document.querySelector<HTMLButtonElement>("#Close_AddGameDiv_Button")!;
 var delete_all_games = document.querySelector<HTMLButtonElement>("#delete_all_games")!;
+var ColorSelect = document.querySelector<HTMLSelectElement>("#ColorSelect")!;
 var GamesCount = 0;
 
 async function LoadGames()
@@ -66,6 +67,7 @@ else
   NewGameButtom.onclick = async function ()
   {
     ErrorDiv.innerText = "";
+    ColorSelect.value = "";
     AddGameParent.style.display = "flex";
   };
 
@@ -73,6 +75,7 @@ else
   {
     var GameNameInput = document.querySelector<HTMLInputElement>("#GameNameInput")!;
     var GameName = GameNameInput.value.trim();
+    var PlayerColor = ColorSelect.value;
 
     if (GameName.length < 4)
     {
@@ -83,6 +86,12 @@ else
     if (GameName.length > 12)
     {
       ErrorDiv.innerText = "The Lobby Name Is Too Long";
+      return;
+    }
+
+    if (PlayerColor == "")
+    {
+      ErrorDiv.innerText = "You must choose a color.";
       return;
     }
 
@@ -106,17 +115,12 @@ else
       return;
     }
 
-    // if (canCreateGame != "CanCreateGame")
-    // {
-    //   ErrorDiv.innerText = "Something went wrong.";
-    //   return;
-    // }
-
     ErrorDiv.innerText = "";
     GameNameInput.value = "";
+    ColorSelect.value = "";
     AddGameParent.style.display = "none";
 
-    var newGameId = await send<number | null>("addGame", userToken, GameName);
+    var newGameId = await send<number | null>("addGame", userToken, GameName, PlayerColor);
     console.log(newGameId);
 
     if (newGameId == null)

@@ -6,6 +6,27 @@
   </head>
 
   <body>
+    <div id="WaitingForPlayerDiv">
+      <div id="WaitingBox">
+
+        <div id="WaitingText">Waiting for other player...</div>
+        <div id="StartStatusText">Start 0/2</div>
+
+        <button id="StartGameButton" type="button">Start</button>
+        <button id="CancelGameButton" type="button">Cancel</button>
+
+        <div id="GameOverButtonsDiv">
+          <button id="PlayAgainButton" type="button">Play Again</button>
+
+          <div id="PlayAgainStatusDiv">0/2</div>
+
+          <button id="StartNewGameButton" type="button">Start A New Game</button>
+          <button id="BackToLobbyButton" type="button">Back To Lobby</button>
+        </div>
+
+      </div>
+    </div>
+
     <div id="GamePageDiv">
       <div id="BoardDiv">
         <button id="Cell00" class="BoardCell" data-y="0" data-x="0" type="button"></button>
@@ -24,4 +45,4 @@
 
     <script type="module" src="Game.js"></script>
   </body>
-</html> 
+</html>

@@ -14,11 +14,11 @@ class Program
   {
     Dictionary<int, GameState> gameStates = [];
 
-
     int port = 5000;
 
     var server = new Server(port);
     var database = new Database();
+
     database.Games.RemoveRange(database.Games);
     database.SaveChanges();
 
@@ -29,7 +29,6 @@ class Program
     while (true)
     {
       var request = server.WaitForRequest();
-
 
       Console.WriteLine($"Received a request: {request.Name}");
 
@@ -112,7 +111,7 @@ class Program
         {
           var (token, GameName) = request.GetParams<(string?, string)>();
 
-          GameName = GameName.Trim();//
+          GameName = GameName.Trim();
 
           var user = database.Users.FirstOrDefault(u => u.UserToken == token);
 
@@ -141,9 +140,10 @@ class Program
 
         else if (request.Name == "addGame")
         {
-          var (token, GameName) = request.GetParams<(string?, string)>();
+          var (token, GameName, playerColor) = request.GetParams<(string?, string, string)>();
 
           GameName = GameName.Trim();
+          playerColor = playerColor.Trim().ToLower();
 
           var user = database.Users.FirstOrDefault(u => u.UserToken == token);
 
@@ -159,6 +159,12 @@ class Program
             continue;
           }
 
+          if (playerColor != "red" && playerColor != "blue")
+          {
+            request.Respond<int?>(null);
+            continue;
+          }
+
           var lowerGameName = GameName.ToLower();
 
           if (database.Games.Any(g => g.GameName.ToLower() == lowerGameName))
@@ -167,16 +173,15 @@ class Program
             continue;
           }
 
-          var game = new Game(GameName, user.Id);
+          var game = new Game(GameName, user.Id, playerColor);
 
           database.Games.Add(game);
           database.SaveChanges();
 
           gameStates.Add(game.Id, new GameState());
-          Console.WriteLine(game.Id);
+
           request.Respond<int?>(game.Id);
         }
-
         else if (request.Name == "deleteMyGame")
         {
           var token = request.GetParams<string?>();
@@ -207,22 +212,105 @@ class Program
         {
           var gameId = request.GetParams<int>();
 
-          var board = gameStates[gameId]!.Board;
+          if (!gameStates.ContainsKey(gameId))
+          {
+            gameStates[gameId] = new GameState();
+          }
+
+          var board = gameStates[gameId].Board;
 
           request.Respond(board);
+        }
+
+        else if (request.Name == "joinGame")
+        {
+          var (token, gameId) = request.GetParams<(string?, int)>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (!gameStates.ContainsKey(gameId))
+          {
+            gameStates[gameId] = new GameState();
+          }
+
+          if (game.Player1Id == user.Id || game.Player2Id == user.Id)
+          {
+            request.Respond("JoinedGame");
+            continue;
+          }
+
+          if (game.Player2Id == null)
+          {
+            game.Player2Id = user.Id;
+
+            if (game.Player1Color == "red")
+            {
+              game.Player2Color = "blue";
+            }
+            else
+            {
+              game.Player2Color = "red";
+            }
+
+            database.SaveChanges();
+
+            request.Respond("JoinedGame");
+            continue;
+          }
+
+          request.Respond("GameFull");
         }
 
         else if (request.Name == "makeMove")
         {
           var (token, gameId, y, x) = request.GetParams<(string?, int, int, int)>();
+
           var user = database.Users.FirstOrDefault(u => u.UserToken == token);
           var game = database.Games.FirstOrDefault(g => g.Id == gameId);
-          var UserSymbol = 'N'; // N = Not Defined
-          if (game?.Player1Id == user?.Id)
+          var UserSymbol = 'N';
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (!gameStates.ContainsKey(gameId))
+          {
+            gameStates[gameId] = new GameState();
+          }
+
+          if (game.Player2Id == null)
+          {
+            request.Respond("WaitingForPlayer");
+            continue;
+          }
+
+          if (game.Player1Started == false || game.Player2Started == false)
+          {
+            request.Respond("GameNotStarted");
+            continue;
+          }
+
+          if (game.Player1Id == user?.Id)
           {
             UserSymbol = 'X';
           }
-          else if (game?.Player2Id == user?.Id)
+          else if (game.Player2Id == user?.Id)
           {
             UserSymbol = 'O';
           }
@@ -232,35 +320,91 @@ class Program
             continue;
           }
 
-          if (gameStates[gameId]!.Board[y*3+x] == 'X' || gameStates[gameId]!.Board[y*3+x] == 'O')
+          var index = y * 3 + x;
+
+          if (index < 0 || index > 8)
+          {
+            request.Respond("InvalidMove");
+            continue;
+          }
+
+          if (gameStates[gameId].Board[index] == 'X' || gameStates[gameId].Board[index] == 'O')
           {
             request.Respond("CantChangeExistingMoves");
             continue;
           }
-          else
+
+          gameStates[gameId].Board[index] = UserSymbol;
+
+          request.Respond("MoveCompleted");
+        }
+
+        else if (request.Name == "checkForWin")
+        {
+          var gameId = request.GetParams<int>();
+
+          if (!gameStates.ContainsKey(gameId))
           {
-            gameStates[gameId]!.Board[y*3+x] = UserSymbol;
-            request.Respond("MoveCompleted");
+            gameStates[gameId] = new GameState();
           }
+
+          var winner = CheckWinner(gameStates[gameId].Board);
+
+          if (winner == 'X')
+          {
+            request.Respond("XWon");
+            continue;
+          }
+
+          if (winner == 'O')
+          {
+            request.Respond("OWon");
+            continue;
+          }
+
+          request.Respond("NoWinner");
         }
 
         else if (request.Name == "currentTurn")
         {
+          var (token, gameId) = request.GetParams<(string?, int)>();
 
-          var (token, gameId) = request.GetParams<(string, int)>();
+          if (!gameStates.ContainsKey(gameId))
+          {
+            gameStates[gameId] = new GameState();
+          }
+
           var board = gameStates[gameId].Board;
           var game = database.Games.FirstOrDefault(g => g.Id == gameId);
           var user = database.Users.FirstOrDefault(u => u.UserToken == token);
-          var UserSymbol = 'N'; // N = Not Defined
+          var UserSymbol = 'N';
 
           var xSum = 0;
           var oSum = 0;
 
-          if (game?.Player1Id == user?.Id)
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player2Id == null)
+          {
+            request.Respond("WaitingForPlayer");
+            continue;
+          }
+
+          if (game.Player1Started == false || game.Player2Started == false)
+          {
+            request.Respond("GameNotStarted");
+            continue;
+          }
+
+          if (game.Player1Id == user?.Id)
           {
             UserSymbol = 'X';
           }
-          else if (game?.Player2Id == user?.Id)
+          else if (game.Player2Id == user?.Id)
           {
             UserSymbol = 'O';
           }
@@ -270,49 +414,538 @@ class Program
             continue;
           }
 
-          for (var i = 0; i < gameStates[gameId].Board.GetLength(0); i++)
+          for (var i = 0; i < board.Length; i++)
           {
-            for (var j = 0; j < gameStates[gameId].Board.GetLength(0); j++)
+            if (board[i] == 'X')
             {
-              if (board[i*3+j] == 'X')
-              {
-                xSum++;
-              }
-
-              if (board[i*3+j] == 'O')
-              {
-                oSum++;
-              }
+              xSum++;
             }
-            if (xSum == oSum)
+
+            if (board[i] == 'O')
             {
-              if(UserSymbol == 'X')
-              {
-                request.Respond("YourTurn");
-              }
-              else
-              {
-                request.Respond("OpponetTurn");
-              }
+              oSum++;
+            }
+          }
+
+          var currentTurnSymbol = 'X';
+
+          if (xSum > oSum)
+          {
+            currentTurnSymbol = 'O';
+          }
+
+          if (UserSymbol == currentTurnSymbol)
+          {
+            request.Respond("YourTurn");
+          }
+          else
+          {
+            request.Respond("OpponentTurn");
+          }
+        }
+
+        else if (request.Name == "currentTurnColor")
+        {
+          var gameId = request.GetParams<int>();
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (!gameStates.ContainsKey(gameId))
+          {
+            gameStates[gameId] = new GameState();
+          }
+
+          if (game.Player2Id == null)
+          {
+            request.Respond("WaitingForPlayer");
+            continue;
+          }
+
+          if (game.Player1Started == false || game.Player2Started == false)
+          {
+            request.Respond("GameNotStarted");
+            continue;
+          }
+
+          var board = gameStates[gameId].Board;
+
+          var xSum = 0;
+          var oSum = 0;
+
+          for (var i = 0; i < board.Length; i++)
+          {
+            if (board[i] == 'X')
+            {
+              xSum++;
+            }
+
+            if (board[i] == 'O')
+            {
+              oSum++;
+            }
+          }
+
+          var currentTurnSymbol = 'X';
+
+          if (xSum > oSum)
+          {
+            currentTurnSymbol = 'O';
+          }
+
+          if (currentTurnSymbol == 'X')
+          {
+            request.Respond(game.Player1Color);
+            continue;
+          }
+
+          request.Respond(game.Player2Color);
+        }
+
+        else if (request.Name == "gameColors")
+        {
+          var gameId = request.GetParams<int>();
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond<string[]>([]);
+            continue;
+          }
+
+          var player2Color = game.Player2Color;
+
+          if (player2Color == null)
+          {
+            if (game.Player1Color == "red")
+            {
+              player2Color = "blue";
             }
             else
             {
-              if (UserSymbol == 'X')
-              {
-                request.Respond("OpponetTurn");
-              }
-              else
-              {
-                request.Respond("YourTurn");
-              }
+              player2Color = "red";
             }
           }
+
+          request.Respond(new string[] { game.Player1Color, player2Color });
+        }
+
+        else if (request.Name == "gameStatus")
+        {
+          var gameId = request.GetParams<int>();
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player2Id == null)
+          {
+            request.Respond("WaitingForPlayer");
+            continue;
+          }
+
+          if (game.Player1Started == true && game.Player2Started == true)
+          {
+            request.Respond("Ready");
+            continue;
+          }
+
+          var startedCount = 0;
+
+          if (game.Player1Started == true)
+          {
+            startedCount++;
+          }
+
+          if (game.Player2Started == true)
+          {
+            startedCount++;
+          }
+
+          if (startedCount == 0)
+          {
+            request.Respond("aPlayerHasAlreadyJoined");
+            continue;
+          }
+
+          request.Respond("Start1/2");
+        }
+        else if (request.Name == "startGame")
+        {
+          var (token, gameId) = request.GetParams<(string?, int)>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player2Id == null)
+          {
+            request.Respond("WaitingForPlayer");
+            continue;
+          }
+
+          if (game.Player1Id == user.Id)
+          {
+            game.Player1Started = true;
+          }
+          else if (game.Player2Id == user.Id)
+          {
+            game.Player2Started = true;
+          }
+          else
+          {
+            request.Respond("NotYourGame");
+            continue;
+          }
+
+          game.PlayAgainResetReady = false;
+
+          database.SaveChanges();
+
+          if (game.Player1Started == true && game.Player2Started == true)
+          {
+            request.Respond("GameStarted");
+            continue;
+          }
+
+          request.Respond("StartRegistered");
+        }
+
+        else if (request.Name == "playAgain")
+        {
+          var (token, gameId) = request.GetParams<(string?, int)>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player1Id != user.Id && game.Player2Id != user.Id)
+          {
+            request.Respond("NotYourGame");
+            continue;
+          }
+
+          if (game.Player2Id == null || game.Player1LeftLobby == true || game.Player2LeftLobby == true)
+          {
+            request.Respond("OtherPlayerLeft");
+            continue;
+          }
+
+          if (game.Player1Id == user.Id)
+          {
+            game.Player1PlayAgain = true;
+          }
+
+          if (game.Player2Id == user.Id)
+          {
+            game.Player2PlayAgain = true;
+          }
+
+          if (game.Player1PlayAgain == true && game.Player2PlayAgain == true)
+          {
+            gameStates[gameId] = new GameState();
+
+            game.Player1Started = false;
+            game.Player2Started = false;
+
+            game.Player1PlayAgain = false;
+            game.Player2PlayAgain = false;
+
+            game.PlayAgainResetReady = true;
+
+            database.SaveChanges();
+
+            request.Respond("GameReset");
+            continue;
+          }
+
+          database.SaveChanges();
+
+          request.Respond("PlayAgainRegistered");
+        }
+
+
+
+        else if (request.Name == "playAgainStatus")
+        {
+          var (token, gameId) = request.GetParams<(string?, int)>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player1Id != user.Id && game.Player2Id != user.Id)
+          {
+            request.Respond("NotYourGame");
+            continue;
+          }
+
+          if (game.Player2Id == null || game.Player1LeftLobby == true || game.Player2LeftLobby == true)
+          {
+            request.Respond("OtherPlayerLeft");
+            continue;
+          }
+
+          if (game.PlayAgainResetReady == true)
+          {
+            request.Respond("GameReset");
+            continue;
+          }
+
+          var playAgainCount = 0;
+
+          if (game.Player1PlayAgain == true)
+          {
+            playAgainCount++;
+          }
+
+          if (game.Player2PlayAgain == true)
+          {
+            playAgainCount++;
+          }
+
+          if (playAgainCount == 0)
+          {
+            request.Respond("PlayAgain0/2");
+            continue;
+          }
+
+          request.Respond("PlayAgain1/2");
+        }
+
+
+
+        else if (request.Name == "playAgainStatus")
+        {
+          var (token, gameId) = request.GetParams<(string?, int)>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player1Id != user.Id && game.Player2Id != user.Id)
+          {
+            request.Respond("NotYourGame");
+            continue;
+          }
+
+          if (game.Player2Id == null || game.Player1LeftLobby == true || game.Player2LeftLobby == true)
+          {
+            request.Respond("OtherPlayerLeft");
+            continue;
+          }
+
+          if (game.PlayAgainResetReady == true)
+          {
+            request.Respond("GameReset");
+            continue;
+          }
+
+          var playAgainCount = 0;
+
+          if (game.Player1PlayAgain == true)
+          {
+            playAgainCount++;
+          }
+
+          if (game.Player2PlayAgain == true)
+          {
+            playAgainCount++;
+          }
+
+          if (playAgainCount == 0)
+          {
+            request.Respond("PlayAgain0/2");
+            continue;
+          }
+
+          request.Respond("PlayAgain1/2");
+        }
+
+        else if (request.Name == "leaveGame")
+        {
+          var (token, gameId) = request.GetParams<(string?, int)>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player1Id == user.Id)
+          {
+            game.Player1LeftLobby = true;
+          }
+          else if (game.Player2Id == user.Id)
+          {
+            game.Player2LeftLobby = true;
+          }
+          else
+          {
+            request.Respond("NotYourGame");
+            continue;
+          }
+
+          database.SaveChanges();
+
+          request.Respond("LeftGame");
+        }
+
+        else if (request.Name == "leaveGame")
+        {
+          var (token, gameId) = request.GetParams<(string?, int)>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player1Id == user.Id)
+          {
+            game.Player1LeftLobby = true;
+          }
+          else if (game.Player2Id == user.Id)
+          {
+            game.Player2LeftLobby = true;
+          }
+          else
+          {
+            request.Respond("NotYourGame");
+            continue;
+          }
+
+          database.SaveChanges();
+
+          request.Respond("LeftGame");
+        }
+
+
+
+        else if (request.Name == "cancelGame")
+        {
+          var (token, gameId) = request.GetParams<(string?, int)>();
+
+          var user = database.Users.FirstOrDefault(u => u.UserToken == token);
+
+          if (user == null)
+          {
+            request.Respond("UserNotFound");
+            continue;
+          }
+
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
+          if (game.Player2Id != null)
+          {
+            request.Respond("aPlayerHasAlreadyJoined");
+            continue;
+          }
+
+          if (game.Player1Id != user.Id)
+          {
+            request.Respond("NotYourGame");
+            continue;
+          }
+
+          gameStates.Remove(gameId);
+
+          database.Games.Remove(game);
+          database.SaveChanges();
+
+          request.Respond("GameDeleted");
         }
 
         else if (request.Name == "clearGames")
         {
           database.Games.RemoveRange(database.Games);
           database.SaveChanges();
+
+          gameStates.Clear();
 
           request.Respond(true);
         }
@@ -325,15 +958,58 @@ class Program
       }
     }
   }
+
+  static char CheckWinner(char[] board)
+  {
+    if (board[0] != 'E' && board[0] == board[1] && board[1] == board[2])
+    {
+      return board[0];
+    }
+
+    if (board[3] != 'E' && board[3] == board[4] && board[4] == board[5])
+    {
+      return board[3];
+    }
+
+    if (board[6] != 'E' && board[6] == board[7] && board[7] == board[8])
+    {
+      return board[6];
+    }
+
+    if (board[0] != 'E' && board[0] == board[3] && board[3] == board[6])
+    {
+      return board[0];
+    }
+
+    if (board[1] != 'E' && board[1] == board[4] && board[4] == board[7])
+    {
+      return board[1];
+    }
+
+    if (board[2] != 'E' && board[2] == board[5] && board[5] == board[8])
+    {
+      return board[2];
+    }
+
+    if (board[0] != 'E' && board[0] == board[4] && board[4] == board[8])
+    {
+      return board[0];
+    }
+
+    if (board[2] != 'E' && board[2] == board[4] && board[4] == board[6])
+    {
+      return board[2];
+    }
+
+    return 'N';
+  }
 }
 
 class Database() : DatabaseCore("database")
 {
   public DbSet<User> Users { get; set; } = default!;
   public DbSet<Game> Games { get; set; } = default!;
-  
 }
-
 
 class User(string username, string password, string userToken)
 {
@@ -346,7 +1022,7 @@ class User(string username, string password, string userToken)
   [JsonIgnore] public string UserToken { get; set; } = userToken;
 }
 
-class Game(string gameName, int userId)
+class Game(string gameName, int userId, string player1Color)
 {
   public int Id { get; set; } = default!;
 
@@ -359,12 +1035,30 @@ class Game(string gameName, int userId)
   public int Player1Id { get; set; } = userId;
 
   public int? Player2Id { get; set; } = null;
-}
 
+  public bool Player1Started { get; set; } = false;
+
+  public bool Player2Started { get; set; } = false;
+
+  public string Player1Color { get; set; } = player1Color;
+
+  public string? Player2Color { get; set; } = null;
+
+  public bool Player1PlayAgain { get; set; } = false;
+
+  public bool Player2PlayAgain { get; set; } = false;
+
+  public bool PlayAgainResetReady { get; set; } = false;
+
+  public bool Player1LeftLobby { get; set; } = false;
+
+  public bool Player2LeftLobby { get; set; } = false;
+}
 
 class GameState
 {
   public int GameId { get; set; }
+
   public char[] Board { get; set; }
 
   public GameState()
@@ -375,9 +1069,8 @@ class GameState
     {
       for (int x = 0; x < 3; x++)
       {
-        Board[y*3+x] = 'E'; // E = empty
+        Board[y * 3 + x] = 'E';
       }
     }
   }
-
 }

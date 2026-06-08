@@ -1,5 +1,3 @@
-
-
 body 
 {
   margin: 0; /* Removes default page margin */
@@ -11,7 +9,10 @@ body
   font-family: "Tahoma", sans-serif; /* Sets the page font */
 
   overflow: hidden; /* Prevents scrolling */
+  transition: background-color 0.35s ease; /* Makes background color changes smooth */
 }
+
+/* ===== Main page layout ===== */
 
 #GamePageDiv 
 {
@@ -23,7 +24,8 @@ body
   align-items: center; /* Centers the board vertically */
 }
 
-/* The full board area */
+/* ===== Board ===== */
+
 #BoardDiv 
 {
   width: 205vmin; /* Controls the full board area width */
@@ -39,7 +41,8 @@ body
   background-position: center; /* Centers the board image */
 }
 
-/* Same design for all board buttons */
+/* ===== Board cells ===== */
+
 .BoardCell 
 {
   position: absolute; /* Allows exact positioning for each button */
@@ -64,21 +67,12 @@ body
 
   padding: 0; /* Removes default button padding */
   outline: none; /* Removes default focus outline */
-
-
-  color: #f4f1e8;
-  font-size: 100px;
-  font-weight: bold;
-  font-family: "Tahoma", sans-serif;
-  text-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.65);
 }
-
 
 .BoardCell:hover 
 {
   background-color: rgba(212, 175, 55, 0.15); /* Shows a soft gold hover effect */
 }
-
 
 /* ===== Exact position of each cell ===== */
 
@@ -93,7 +87,7 @@ body
 {
   left: 42.2%;
   top: 2%;
-  width:16.3%;
+  width: 16.3%;
 }
 
 #Cell02 
@@ -107,23 +101,22 @@ body
 {
   left: 27%;
   top: 30%;
-  height:31.5%;
+  height: 31.5%;
 }
 
 #Cell11 
 {
   left: 42.2%;
   top: 30.5%;
-  width:16.4%;
-  height:31%;
-
+  width: 16.4%;
+  height: 31%;
 }
 
 #Cell12 
 {
   left: 58.5%;
   top: 30%;
-  height:31.5%;
+  height: 31.5%;
 }
 
 /* Bottom row */
@@ -136,12 +129,201 @@ body
 #Cell21 
 {
   left: 42.2%;
-  width:16.3%;
   top: 61.5%;
+  width: 16.3%;
 }
 
 #Cell22 
 {
   left: 58.5%;
   top: 61.5%;
+}
+
+/* ===== Waiting / game over dark background ===== */
+
+#WaitingForPlayerDiv
+{
+  width: 100vw;
+  height: 100vh;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.62);
+
+  z-index: 9999;
+}
+
+/* ===== Waiting / game over box ===== */
+
+#WaitingBox
+{
+  width: 36vw;
+  min-height: 32vh;
+
+  background-color: #f4f1e8;
+  border: 0.3vh solid #d4af37;
+  border-radius: 2.4vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 2vh;
+
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+
+  box-sizing: border-box;
+
+  box-shadow: 0vh 0vh 3.5vh rgba(0, 0, 0, 0.75);
+}
+
+#WaitingText
+{
+  color: #202124;
+
+  font-size: 3vh;
+  font-weight: bold;
+
+  text-align: center;
+  user-select: none;
+}
+
+#StartStatusText
+{
+  color: #8c6f1f;
+
+  font-size: 2.3vh;
+  font-weight: bold;
+
+  text-align: center;
+  user-select: none;
+}
+
+/* ===== Regular dark buttons ===== */
+
+#StartGameButton,
+#PlayAgainButton,
+#StartNewGameButton,
+#BackToLobbyButton
+{
+  width: 13vw;
+  height: 5.3vh;
+
+  background-color: #2f2f35;
+  color: #f4f1e8;
+
+  border: 0.25vh solid #d4af37;
+  border-radius: 1.4vh;
+
+  font-size: 2vh;
+  font-weight: bold;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: 0.22s;
+}
+
+#StartGameButton:hover,
+#PlayAgainButton:hover,
+#StartNewGameButton:hover,
+#BackToLobbyButton:hover
+{
+  background-color: #3b3b42;
+  color: white;
+  border-color: #f0c94d;
+
+  transform: scale(1.04);
+}
+
+#StartGameButton:disabled,
+#PlayAgainButton:disabled
+{
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== Cancel button ===== */
+
+#CancelGameButton
+{
+  width: 13vw;
+  height: 5.3vh;
+
+  background-color: #8b0000;
+  color: white;
+
+  border: 0.25vh solid #ff3b3b;
+  border-radius: 1.4vh;
+
+  font-size: 2vh;
+  font-weight: bold;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: 0.22s;
+
+  box-shadow: 0vh 0vh 1.4vh rgba(255, 0, 0, 0.45);
+}
+
+#CancelGameButton:hover
+{
+  background-color: #b00000;
+  border-color: #ff0000;
+
+  transform: scale(1.05);
+
+  box-shadow: 0vh 0vh 2vh rgba(255, 0, 0, 0.75);
+}
+
+/* ===== Game over section ===== */
+
+#GameOverButtonsDiv
+{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1.4vh;
+
+  margin-top: 1vh;
+}
+
+/* Text under Play Again */
+#PlayAgainStatusDiv
+{
+  min-width: 13vw;
+  min-height: 4vh;
+
+  color: #d4af37;
+  background-color: #2f2f35;
+
+  border: 0.22vh solid #d4af37;
+  border-radius: 1.2vh;
+
+  font-size: 2vh;
+  font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  user-select: none;
+
+  padding-left: 1vw;
+  padding-right: 1vw;
+
+  box-shadow: 0vh 0vh 1.2vh rgba(212, 175, 55, 0.35);
 }

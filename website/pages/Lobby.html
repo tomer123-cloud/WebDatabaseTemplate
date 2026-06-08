@@ -6,11 +6,11 @@
   </head>
 
   <body>
-    <div id = "TopFlexbox">
-        <button id="LogoutButton">Log out</button>
-        <div id="WelcomeUserDiv"></div>
-        <button id="HowToPlayButton">How to play?</button>
-        <button id="Create_Game_Button">Create A Game</button>
+    <div id="TopFlexbox">
+      <button id="LogoutButton">Log out</button>
+      <div id="WelcomeUserDiv"></div>
+      <button id="HowToPlayButton">How to play?</button>
+      <button id="Create_Game_Button">Create A Game</button>
     </div>
 
     <div id="GamesDiv"></div>
@@ -18,11 +18,20 @@
     <button id="delete_all_games"></button>
     
     <div id="AddGameParent">
-        <button id="Close_AddGameDiv_Button"></button>
-        <input id="GameNameInput" placeholder="Enter A Name To Your Game Lobby">
-        <button id="CreateButton">Create</button>
-        <div id="ErrorDiv"></div>
+      <button id="Close_AddGameDiv_Button"></button>
+
+      <input id="GameNameInput" placeholder="Enter A Name To Your Game Lobby">
+
+      <select id="ColorSelect">
+        <option value="">Choose your color</option>
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+      </select>
+
+      <button id="CreateButton">Create</button>
+      <div id="ErrorDiv"></div>
     </div>
+
     <script type="module" src="Lobby.js"></script>
   </body>
 </html>
