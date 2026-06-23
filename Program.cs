@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Project.DatabaseUtilities;
@@ -348,17 +347,97 @@ class Program
             gameStates[gameId] = new GameState();
           }
 
+          var game = database.Games.FirstOrDefault(g => g.Id == gameId);
+
+          if (game == null)
+          {
+            request.Respond("GameNotFound");
+            continue;
+          }
+
           var winner = CheckWinner(gameStates[gameId].Board);
 
           if (winner == 'X')
           {
+            if (gameStates[gameId].ResultAlreadySaved == false)
+            {
+              var winnerUser = database.Users.FirstOrDefault(u => u.Id == game.Player1Id);
+              var loserUser = database.Users.FirstOrDefault(u => u.Id == game.Player2Id);
+
+              if (winnerUser != null)
+              {
+                var winnerLeaderBoard = GetLeaderBoardRow(database, winnerUser.Username);
+                winnerLeaderBoard.Wins++;
+              }
+
+              if (loserUser != null)
+              {
+                var loserLeaderBoard = GetLeaderBoardRow(database, loserUser.Username);
+                loserLeaderBoard.Losses++;
+              }
+
+              gameStates[gameId].ResultAlreadySaved = true;
+
+              database.SaveChanges();
+            }
+
             request.Respond("XWon");
             continue;
           }
 
           if (winner == 'O')
           {
+            if (gameStates[gameId].ResultAlreadySaved == false)
+            {
+              var winnerUser = database.Users.FirstOrDefault(u => u.Id == game.Player2Id);
+              var loserUser = database.Users.FirstOrDefault(u => u.Id == game.Player1Id);
+
+              if (winnerUser != null)
+              {
+                var winnerLeaderBoard = GetLeaderBoardRow(database, winnerUser.Username);
+                winnerLeaderBoard.Wins++;
+              }
+
+              if (loserUser != null)
+              {
+                var loserLeaderBoard = GetLeaderBoardRow(database, loserUser.Username);
+                loserLeaderBoard.Losses++;
+              }
+
+              gameStates[gameId].ResultAlreadySaved = true;
+
+              database.SaveChanges();
+            }
+
             request.Respond("OWon");
+            continue;
+          }
+
+          if (IsTie(gameStates[gameId].Board) == true)
+          {
+            if (gameStates[gameId].ResultAlreadySaved == false)
+            {
+              var player1 = database.Users.FirstOrDefault(u => u.Id == game.Player1Id);
+              var player2 = database.Users.FirstOrDefault(u => u.Id == game.Player2Id);
+
+              if (player1 != null)
+              {
+                var player1LeaderBoard = GetLeaderBoardRow(database, player1.Username);
+                player1LeaderBoard.Ties++;
+              }
+
+              if (player2 != null)
+              {
+                var player2LeaderBoard = GetLeaderBoardRow(database, player2.Username);
+                player2LeaderBoard.Ties++;
+              }
+
+              gameStates[gameId].ResultAlreadySaved = true;
+
+              database.SaveChanges();
+            }
+
+            request.Respond("Tie");
             continue;
           }
 
@@ -940,15 +1019,18 @@ class Program
           request.Respond("GameDeleted");
         }
 
-        else if (request.Name == "clearGames")
+        else if (request.Name == "getLeaderboard")
         {
-          database.Games.RemoveRange(database.Games);
-          database.SaveChanges();
+          var leaderboard = database.LeaderBoards
+            .OrderByDescending(l => l.Wins)
+            .ThenByDescending(l => l.Ties)
+            .ThenBy(l => l.Losses)
+            .ToList();
 
-          gameStates.Clear();
-
-          request.Respond(true);
+          request.Respond(leaderboard);
         }
+
+
       }
 
       catch (Exception exception)
@@ -1003,12 +1085,46 @@ class Program
 
     return 'N';
   }
+
+
+  static bool IsTie(char[] board)
+  {
+    if (CheckWinner(board) != 'N')
+    {
+      return false;
+    }
+
+    for (var i = 0; i < board.Length; i++)
+    {
+      if (board[i] == 'E')
+      {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  static LeaderBoard GetLeaderBoardRow(Database database, string username)
+  {
+    var leaderBoardRow = database.LeaderBoards.FirstOrDefault(l => l.Username == username);
+
+    if (leaderBoardRow == null)
+    {
+      leaderBoardRow = new LeaderBoard(username, 0, 0, 0);
+
+      database.LeaderBoards.Add(leaderBoardRow);
+    }
+
+    return leaderBoardRow;
+  }
 }
 
 class Database() : DatabaseCore("database")
 {
   public DbSet<User> Users { get; set; } = default!;
   public DbSet<Game> Games { get; set; } = default!;
+  public DbSet<LeaderBoard> LeaderBoards { get; set; } = default!;
 }
 
 class User(string username, string password, string userToken)
@@ -1061,6 +1177,8 @@ class GameState
 
   public char[] Board { get; set; }
 
+  public bool ResultAlreadySaved { get; set; } = false;
+
   public GameState()
   {
     Board = new char[9];
@@ -1076,10 +1194,14 @@ class GameState
 }
 
 class LeaderBoard(string username, int wins, int ties, int losses)
-
 {
-  string Username { get; set; } = username;
-  int Wins { get; set; } = wins;
-  int Ties { get; set; } = ties;
-  int Losses { get; set; } = losses;
+  public int Id { get; set; } = default!;
+
+  public string Username { get; set; } = username;
+
+  public int Wins { get; set; } = wins;
+
+  public int Ties { get; set; } = ties;
+
+  public int Losses { get; set; } = losses;
 }

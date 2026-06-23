@@ -327,3 +327,52 @@ body
 
   box-shadow: 0vh 0vh 1.2vh rgba(212, 175, 55, 0.35);
 }
+
+#TurnTextDiv
+{
+  position: fixed;
+
+  top: 4vh;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  color: #f4f1e8;
+
+  font-size: 6vh;
+  font-weight: bold;
+
+  text-align: center;
+  user-select: none;
+
+  z-index: 20;
+
+  text-shadow: 0vh 0vh 2vh rgba(0, 0, 0, 0.9);
+
+  background-color: rgba(0, 0, 0, 0.35);
+
+  border: 0.25vh solid #d4af37;
+  border-radius: 2vh;
+
+  padding: 1vh 3vw;
+
+  box-shadow: 0vh 0vh 2.5vh rgba(212, 175, 55, 0.45);
+}
+
+#TurnTextDiv.YourTurn
+{
+  color: #42d977;
+
+  border-color: #42d977;
+
+  box-shadow: 0vh 0vh 3vh rgba(66, 217, 119, 0.75);
+}
+
+#TurnTextDiv.OpponentTurn
+{
+  color: #ff4d4d;
+
+  border-color: #ff4d4d;
+
+  box-shadow: 0vh 0vh 3vh rgba(255, 77, 77, 0.65);
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Leaderboard.css" />
+    <title>Leaderboard</title>
+  </head>
+
+  <body>
+    <div id="PageDiv">
+      <div id="LeaderboardCardDiv">
+        <h1 id="LeaderboardHeader">Leaderboard</h1>
+
+        <p id="LeaderboardText">
+          Top players by wins, ties, and losses
+        </p>
+
+        <table id="LeaderboardTable">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Username</th>
+              <th>Wins</th>
+              <th>Ties</th>
+              <th>Losses</th>
+            </tr>
+          </thead>
+
+          <tbody id="LeaderboardTableBody">
+            <tr>
+              <td colspan="5" id="LoadingCell">Loading leaderboard...</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <a id="BackButton" href="/website/pages/Lobby.html">Back To The Lobby</a>
+      </div>
+    </div>
+  </body>
+</html>

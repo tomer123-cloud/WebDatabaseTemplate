@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="Game.css" />
-    <title>Tic Tac Toe Game</title>
-  </head>
 
-  <body>
-    <div id="WaitingForPlayerDiv">
-      <div id="WaitingBox">
+<head>
+  <link rel="stylesheet" href="Game.css" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2911/2911080.png" type="image/png">
+  <title>Tic Tac Toe Game</title>
+</head>
 
-        <div id="WaitingText">Waiting for other player...</div>
-        <div id="StartStatusText">Start 0/2</div>
+<body>
+  <div id="WaitingForPlayerDiv">
+    <div id="WaitingBox">
 
-        <button id="StartGameButton" type="button">Start</button>
-        <button id="CancelGameButton" type="button">Cancel</button>
+      <div id="WaitingText">Waiting for other player...</div>
+      <div id="StartStatusText">Start 0/2</div>
 
-        <div id="GameOverButtonsDiv">
-          <button id="PlayAgainButton" type="button">Play Again</button>
+      <button id="StartGameButton" type="button">Start</button>
+      <button id="CancelGameButton" type="button">Cancel</button>
 
-          <div id="PlayAgainStatusDiv">0/2</div>
+      <div id="GameOverButtonsDiv">
+        <button id="PlayAgainButton" type="button">Play Again</button>
 
-          <button id="StartNewGameButton" type="button">Start A New Game</button>
-          <button id="BackToLobbyButton" type="button">Back To Lobby</button>
-        </div>
+        <div id="PlayAgainStatusDiv">0/2</div>
 
+        <button id="StartNewGameButton" type="button">Start A New Game</button>
+        <button id="BackToLobbyButton" type="button">Back To Lobby</button>
       </div>
+
     </div>
+  </div>
 
-    <div id="GamePageDiv">
-      <div id="BoardDiv">
-        <button id="Cell00" class="BoardCell" data-y="0" data-x="0" type="button"></button>
-        <button id="Cell01" class="BoardCell" data-y="0" data-x="1" type="button"></button>
-        <button id="Cell02" class="BoardCell" data-y="0" data-x="2" type="button"></button>
+  <div id="GamePageDiv">
+    <div id="BoardDiv">
+      <button id="Cell00" class="BoardCell" data-y="0" data-x="0" type="button"></button>
+      <button id="Cell01" class="BoardCell" data-y="0" data-x="1" type="button"></button>
+      <button id="Cell02" class="BoardCell" data-y="0" data-x="2" type="button"></button>
 
-        <button id="Cell10" class="BoardCell" data-y="1" data-x="0" type="button"></button>
-        <button id="Cell11" class="BoardCell" data-y="1" data-x="1" type="button"></button>
-        <button id="Cell12" class="BoardCell" data-y="1" data-x="2" type="button"></button>
+      <button id="Cell10" class="BoardCell" data-y="1" data-x="0" type="button"></button>
+      <button id="Cell11" class="BoardCell" data-y="1" data-x="1" type="button"></button>
+      <button id="Cell12" class="BoardCell" data-y="1" data-x="2" type="button"></button>
 
-        <button id="Cell20" class="BoardCell" data-y="2" data-x="0" type="button"></button>
-        <button id="Cell21" class="BoardCell" data-y="2" data-x="1" type="button"></button>
-        <button id="Cell22" class="BoardCell" data-y="2" data-x="2" type="button"></button>
-      </div>
+      <button id="Cell20" class="BoardCell" data-y="2" data-x="0" type="button"></button>
+      <button id="Cell21" class="BoardCell" data-y="2" data-x="1" type="button"></button>
+      <button id="Cell22" class="BoardCell" data-y="2" data-x="2" type="button"></button>
     </div>
+  </div>
 
-    <script type="module" src="Game.js"></script>
-  </body>
+  <script type="module" src="Game.js"></script>
+</body>
+
 </html>

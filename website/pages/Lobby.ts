@@ -47,8 +47,6 @@ var AddGameParent = document.querySelector<HTMLElement>("#AddGameParent")!;
 // Finds the button that closes the Create Game popup.
 var CloseButton = document.querySelector<HTMLButtonElement>("#Close_AddGameDiv_Button")!;
 
-// Finds the button that deletes all games.
-var delete_all_games = document.querySelector<HTMLButtonElement>("#delete_all_games")!;
 
 // Finds the select element used for choosing red or blue.
 var ColorSelect = document.querySelector<HTMLSelectElement>("#ColorSelect")!;
@@ -332,22 +330,6 @@ else
     AddGameParent.style.display = "none";
   };
 
-
-  /* ---------- Delete all games ---------- */
-
-
-  // Runs when the delete-all-games button is clicked.
-  delete_all_games.onclick = async function ()
-  {
-    // Asks the server to delete every game.
-    await send("clearGames");
-
-    // Removes all currently displayed game cards.
-    GamesDiv.innerHTML = "";
-
-    // Reloads the available games.
-    await LoadGames();
-  };
 
 
   /* ---------- First game list load ---------- */

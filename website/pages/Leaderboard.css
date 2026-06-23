@@ -1,0 +1,168 @@
+body
+{
+  margin: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  font-family: "Tahoma", sans-serif;
+
+  background: linear-gradient(135deg, #1b2536, #2b3a52);
+}
+
+#PageDiv
+{
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#LeaderboardCardDiv
+{
+  width: 72vw;
+  min-height: 72vh;
+
+  background-color: rgba(244, 241, 232, 0.96);
+
+  border: 0.35vh solid #d4af37;
+  border-radius: 3vh;
+
+  box-shadow: 0vh 0vh 5vh rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 2.5vh;
+
+  padding: 4vh;
+  box-sizing: border-box;
+}
+
+#LeaderboardHeader
+{
+  margin: 0;
+
+  color: #202124;
+
+  font-size: 7vh;
+  font-weight: bold;
+
+  text-align: center;
+
+  text-shadow: 0vh 0.35vh 0vh #d4af37;
+}
+
+#LeaderboardText
+{
+  margin: 0;
+
+  color: #8c6f1f;
+
+  font-size: 2.4vh;
+  font-weight: bold;
+
+  text-align: center;
+}
+
+#LeaderboardTable
+{
+  width: 90%;
+
+  border-collapse: collapse;
+
+  background-color: #202124;
+
+  border: 0.3vh solid #d4af37;
+  border-radius: 2vh;
+
+  overflow: hidden;
+
+  box-shadow: 0vh 0vh 2.5vh rgba(0, 0, 0, 0.45);
+}
+
+#LeaderboardTable th
+{
+  background-color: #2f2f35;
+  color: #d4af37;
+
+  font-size: 2.4vh;
+  font-weight: bold;
+
+  padding: 1.8vh;
+
+  border-bottom: 0.25vh solid #d4af37;
+}
+
+#LeaderboardTable td
+{
+  color: #f4f1e8;
+
+  font-size: 2.2vh;
+  font-weight: bold;
+
+  text-align: center;
+
+  padding: 1.6vh;
+
+  border-bottom: 0.15vh solid rgba(212, 175, 55, 0.35);
+}
+
+#LeaderboardTable tr:hover
+{
+  background-color: #30303a;
+}
+
+#LoadingCell
+{
+  color: #f4f1e8;
+  font-size: 2.2vh;
+}
+
+#BackButton
+{
+  width: 14vw;
+  height: 6vh;
+
+  background-color: #2f2f35;
+  color: #f4f1e8;
+
+  border: 0.25vh solid #ffffff;
+  border-radius: 2vh;
+
+  font-size: 2.2vh;
+  font-weight: bold;
+
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
+
+  user-select: none;
+  cursor: pointer;
+
+  transition: 0.22s;
+
+  box-shadow: 0vh 0vh 1.8vh rgba(212, 175, 55, 0.25);
+}
+
+#BackButton:hover
+{
+  background-color: #3b3b42;
+  color: white;
+
+  border-color: #c4a746;
+
+  transform: scale(1.04);
+
+  box-shadow: 0vh 0vh 2.5vh rgba(240, 201, 77, 0.55);
+}

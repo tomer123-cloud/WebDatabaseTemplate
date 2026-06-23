@@ -1,7 +1,4 @@
-export type Item = {
-  name: string;
-  amount: number;
-};
+
 
 
 export type User = {
@@ -16,4 +13,12 @@ export type Game = {
   user: User;
   player1Id: number;
   player2Id: number | null;
+};
+
+export type LeaderBoard =
+{
+  username: string;
+  wins: number;
+  ties: number;
+  losses: number;
 };

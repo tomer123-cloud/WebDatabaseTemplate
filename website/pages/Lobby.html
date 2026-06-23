@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="Lobby.css" />
-    <title>Tic Tac Toe</title>
-  </head>
 
-  <body>
-    <div id="TopFlexbox">
-      <button id="LogoutButton">Log out</button>
-      <div id="WelcomeUserDiv"></div>
-      <button id="HowToPlayButton">How to play?</button>
-      <button id="Create_Game_Button">Create A Game</button>
-    </div>
+<head>
+  <link rel="stylesheet" href="Lobby.css" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2911/2911080.png" type="image/png">
+  <title>Tic Tac Toe</title>
+</head>
 
-    <div id="GamesDiv"></div>
-    
-    <button id="delete_all_games"></button>
-    
-    <div id="AddGameParent">
-      <button id="Close_AddGameDiv_Button"></button>
+<body>
+  <div id="TopFlexbox">
+    <button id="LogoutButton">Log out</button>
+    <div id="WelcomeUserDiv"></div>
+    <a id="HowToPlayButton" href="/website/pages/how_To_Play.html">how to play?</a>
+    <button id="Create_Game_Button">Create A Game</button>
+    <a id="LeaderboardButton" href="/website/pages/Leaderboard.html">Leaderboard</a>
+  </div>
 
-      <input id="GameNameInput" placeholder="Enter A Name To Your Game Lobby">
+  <div id="GamesDiv"></div>
 
-      <select id="ColorSelect">
-        <option value="">Choose your color</option>
-        <option value="red">Red</option>
-        <option value="blue">Blue</option>
-      </select>
 
-      <button id="CreateButton">Create</button>
-      <div id="ErrorDiv"></div>
-    </div>
+  <div id="AddGameParent">
+    <button id="Close_AddGameDiv_Button"></button>
 
-    <script type="module" src="Lobby.js"></script>
-  </body>
+    <input id="GameNameInput" placeholder="Enter A Name To Your Game Lobby">
+
+    <select id="ColorSelect">
+      <option value="">Choose your color</option>
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+    </select>
+
+    <button id="CreateButton">Create</button>
+    <div id="ErrorDiv"></div>
+  </div>
+
+  <script type="module" src="Lobby.js"></script>
+</body>
+
 </html>

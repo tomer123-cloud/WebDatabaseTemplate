@@ -22,10 +22,10 @@ body
   align-items: center;
 }
 
-#CardDiv
+#ContentDiv
 {
-  width: 45vw;
-  min-height: 70vh;
+  width: 70vw;
+  min-height: 80vh;
 
   background-color: rgba(244, 241, 232, 0.96);
 
@@ -39,33 +39,25 @@ body
   justify-content: center;
   align-items: center;
 
-  gap: 2vh;
+  gap: 2.5vh;
 
   padding: 4vh;
   box-sizing: border-box;
 }
 
-#TopText
+#MainHeader
 {
-  color: #8c6f1f;
+  margin: 0;
 
-  font-size: 2.6vh;
-  font-weight: bold;
-
-  letter-spacing: 0.25vw;
-}
-
-#ErrorNumberDiv
-{
   color: #202124;
 
-  font-size: 12vh;
-  font-weight: bold;
+  font-size: 6vh;
+  text-align: center;
 
-  text-shadow: 0vh 0.4vh 0vh #d4af37;
+  text-shadow: 0vh 0.3vh 0vh #d4af37;
 }
 
-#BoardDiv
+#BoardExampleDiv
 {
   width: 24vh;
   height: 24vh;
@@ -113,46 +105,57 @@ body
   color: #1d4ed8;
 }
 
-.question
+.empty
 {
+  color: transparent;
+}
+
+#RulesDiv
+{
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+
+  gap: 1.5vw;
+}
+
+.RuleBox
+{
+  width: 15vw;
+
+  background-color: #202124;
+
+  border: 0.25vh solid #d4af37;
+  border-radius: 1.8vh;
+
+  padding: 2vh;
+  box-sizing: border-box;
+
+  text-align: center;
+
+  box-shadow: 0vh 0vh 1.5vh rgba(0, 0, 0, 0.45);
+}
+
+.RuleBox h2
+{
+  margin-top: 0;
+  margin-bottom: 1vh;
+
   color: #d4af37;
 
-  animation: questionAnimation 0.7s infinite alternate;
+  font-size: 2.4vh;
 }
 
-@keyframes questionAnimation
-{
-  from
-  {
-    transform: scale(1);
-    text-shadow: none;
-  }
-
-  to
-  {
-    transform: scale(1.25);
-    text-shadow: 0vh 0vh 1.5vh #d4af37;
-  }
-}
-
-#MainHeader
+.RuleBox p
 {
   margin: 0;
 
-  color: #202124;
+  color: #f4f1e8;
 
-  font-size: 5vh;
-  text-align: center;
-}
-
-#MessageText
-{
-  margin: 0;
-
-  color: #2f2f35;
-
-  font-size: 2.3vh;
-  text-align: center;
+  font-size: 1.9vh;
+  line-height: 1.5;
 }
 
 #StartButton

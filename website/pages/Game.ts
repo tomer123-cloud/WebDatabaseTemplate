@@ -73,6 +73,9 @@ var StartNewGameButton = document.querySelector<HTMLButtonElement>("#StartNewGam
 var BackToLobbyButton = document.querySelector<HTMLButtonElement>("#BackToLobbyButton")!;
 
 
+
+
+
 // Creates an array that contains all nine board buttons in board order.
 var Board: HTMLButtonElement[] = [
     // Adds the three buttons from the first row.
@@ -122,6 +125,9 @@ function SetBoardDisabled(disabled: boolean) {
         Board[i].disabled = disabled;
     }
 }
+
+
+
 
 
 // Removes every X and O currently displayed on the screen.
@@ -551,94 +557,88 @@ async function CheckForWin() {
 
 
 // Checks the current Play Again state after a game ends.
-async function CheckPlayAgainStatus()
-{
-  // Stops if the game has not ended yet.
-  if (GameFinished == false)
-  {
-    // Leaves the function because Play Again is only relevant after game over.
-    return;
-  }
-
-  // Requests the current Play Again status from the server.
-  var playAgainStatus = await send<string>("playAgainStatus", token, GameId);
-
-  // Checks whether no player selected Play Again.
-  if (playAgainStatus == "PlayAgain0/2")
-  {
-    // Displays that zero out of two players selected Play Again.
-    PlayAgainStatusDiv.innerText = "0/2";
-
-    // Keeps the Play Again button enabled.
-    PlayAgainButton.disabled = false;
-
-    // Stops after handling this status.
-    return;
-  }
-
-  // Checks whether one player selected Play Again.
-  if (playAgainStatus == "PlayAgain1/2")
-  {
-    // Displays that one out of two players selected Play Again.
-    PlayAgainStatusDiv.innerText = "1/2";
-
-    // Keeps the Play Again button enabled.
-    PlayAgainButton.disabled = false;
-
-    // Stops after handling this status.
-    return;
-  }
-
-  // Checks whether one of the players left the game.
-  if (playAgainStatus == "OtherPlayerLeft")
-  {
-    // Displays a message explaining that the other player left.
-    PlayAgainStatusDiv.innerText = "the other player has left the lobby";
-
-    // Disables Play Again because two players are required.
-    PlayAgainButton.disabled = true;
-
-    // Stops after handling this status.
-    return;
-  }
-
-  // Checks whether both players selected Play Again and the server reset the game.
-  if (playAgainStatus == "GameReset")
-  {
-    // Checks whether this browser is currently expecting the reset.
-    if (WaitingForPlayAgainReset == false)
-    {
-      // Ignores the reset when this browser did not request it.
-      return;
+async function CheckPlayAgainStatus() {
+    // Stops if the game has not ended yet.
+    if (GameFinished == false) {
+        // Leaves the function because Play Again is only relevant after game over.
+        return;
     }
 
-    // Marks that this browser is no longer waiting for the reset.
-    WaitingForPlayAgainReset = false;
+    // Requests the current Play Again status from the server.
+    var playAgainStatus = await send<string>("playAgainStatus", token, GameId);
 
-    // Marks the new game as not finished.
-    GameFinished = false;
+    // Checks whether no player selected Play Again.
+    if (playAgainStatus == "PlayAgain0/2") {
+        // Displays that zero out of two players selected Play Again.
+        PlayAgainStatusDiv.innerText = "0/2";
 
-    // Prevents moves until both players press Start again.
-    CanPlay = false;
+        // Keeps the Play Again button enabled.
+        PlayAgainButton.disabled = false;
 
-    // Removes the saved previous board so the reset board can be loaded.
-    LastBoardState = null;
+        // Stops after handling this status.
+        return;
+    }
 
-    // Removes all displayed X and O values from the page.
-    ClearBoardOnScreen();
+    // Checks whether one player selected Play Again.
+    if (playAgainStatus == "PlayAgain1/2") {
+        // Displays that one out of two players selected Play Again.
+        PlayAgainStatusDiv.innerText = "1/2";
 
-    // Reloads the players' selected colors.
-    await LoadGameColors();
+        // Keeps the Play Again button enabled.
+        PlayAgainButton.disabled = false;
 
-    // Checks the new game status.
-    await CheckGameStatus();
+        // Stops after handling this status.
+        return;
+    }
 
-    // Loads and displays the reset board.
-    await CheckBoardState();
+    // Checks whether one of the players left the game.
+    if (playAgainStatus == "OtherPlayerLeft") {
+        // Displays a message explaining that the other player left.
+        PlayAgainStatusDiv.innerText = "the other player has left the lobby";
 
-    // Stops after handling the reset.
-    return;
-  }
+        // Disables Play Again because two players are required.
+        PlayAgainButton.disabled = true;
+
+        // Stops after handling this status.
+        return;
+    }
+
+    // Checks whether both players selected Play Again and the server reset the game.
+    if (playAgainStatus == "GameReset") {
+        // Checks whether this browser is currently expecting the reset.
+        if (WaitingForPlayAgainReset == false) {
+            // Ignores the reset when this browser did not request it.
+            return;
+        }
+
+        // Marks that this browser is no longer waiting for the reset.
+        WaitingForPlayAgainReset = false;
+
+        // Marks the new game as not finished.
+        GameFinished = false;
+
+        // Prevents moves until both players press Start again.
+        CanPlay = false;
+
+        // Removes the saved previous board so the reset board can be loaded.
+        LastBoardState = null;
+
+
+        // Removes all displayed X and O values from the page.
+        ClearBoardOnScreen();
+
+        // Reloads the players' selected colors.
+        await LoadGameColors();
+
+        // Checks the new game status.
+        await CheckGameStatus();
+
+        // Loads and displays the reset board.
+        await CheckBoardState();
+
+        // Stops after handling the reset.
+        return;
+    }
 }
 
 
@@ -652,17 +652,15 @@ var joinGameResult = await send<string>("joinGame", token, GameId);
 console.log("joinGameResult:", joinGameResult);
 
 // Checks whether the login token did not match any user.
-if (joinGameResult == "UserNotFound")
-{
-  // Sends the visitor back to the Start page.
-  location.href = "/website/pages/Start.html";
+if (joinGameResult == "UserNotFound") {
+    // Sends the visitor back to the Start page.
+    location.href = "/website/pages/Start.html";
 }
 
 // Checks whether the game does not exist or already has two players.
-if (joinGameResult == "GameNotFound" || joinGameResult == "GameFull")
-{
-  // Sends the user back to the Lobby page.
-  location.href = "/website/pages/Lobby.html";
+if (joinGameResult == "GameNotFound" || joinGameResult == "GameFull") {
+    // Sends the user back to the Lobby page.
+    location.href = "/website/pages/Lobby.html";
 }
 
 
@@ -677,137 +675,125 @@ ClearBoardOnScreen();
 
 
 // Runs when the Start button is clicked.
-StartGameButton.onclick = async function ()
-{
-  // Tells the server that this player pressed Start.
-  var startResult = await send<string>("startGame", token, GameId);
+StartGameButton.onclick = async function () {
+    // Tells the server that this player pressed Start.
+    var startResult = await send<string>("startGame", token, GameId);
 
-  // Prints the server response in the browser console.
-  console.log("startResult:", startResult);
+    // Prints the server response in the browser console.
+    console.log("startResult:", startResult);
 
-  // Reloads the player colors.
-  await LoadGameColors();
+    // Reloads the player colors.
+    await LoadGameColors();
 
-  // Checks whether both players are ready.
-  await CheckGameStatus();
+    // Checks whether both players are ready.
+    await CheckGameStatus();
 
-  // Loads the current board from the server.
-  await CheckBoardState();
+    // Loads the current board from the server.
+    await CheckBoardState();
 
-  // Checks whether the board already contains a winning result.
-  await CheckForWin();
+    // Checks whether the board already contains a winning result.
+    await CheckForWin();
 };
 
 
 // Runs when the Cancel button is clicked.
-CancelGameButton.onclick = async function ()
-{
-  // Asks the server to cancel and delete the current game.
-  await send<string>("cancelGame", token, GameId);
+CancelGameButton.onclick = async function () {
+    // Asks the server to cancel and delete the current game.
+    await send<string>("cancelGame", token, GameId);
 
-  // Sends the user back to the Lobby page.
-  location.href = "/website/pages/Lobby.html";
+    // Sends the user back to the Lobby page.
+    location.href = "/website/pages/Lobby.html";
 };
 
 
 // Runs when the Play Again button is clicked.
-PlayAgainButton.onclick = async function ()
-{
-  // Checks whether the Play Again button is disabled.
-  if (PlayAgainButton.disabled == true)
-  {
-    // Stops because a disabled button should not send a request.
-    return;
-  }
+PlayAgainButton.onclick = async function () {
+    // Checks whether the Play Again button is disabled.
+    if (PlayAgainButton.disabled == true) {
+        // Stops because a disabled button should not send a request.
+        return;
+    }
 
-  // Marks that this browser is waiting for the server to reset the game.
-  WaitingForPlayAgainReset = true;
+    // Marks that this browser is waiting for the server to reset the game.
+    WaitingForPlayAgainReset = true;
 
-  // Tells the server that this player selected Play Again.
-  var playAgainResult = await send<string>("playAgain", token, GameId);
+    // Tells the server that this player selected Play Again.
+    var playAgainResult = await send<string>("playAgain", token, GameId);
 
-  // Prints the server response in the browser console.
-  console.log("playAgainResult:", playAgainResult);
+    // Prints the server response in the browser console.
+    console.log("playAgainResult:", playAgainResult);
 
-  // Checks the updated Play Again status.
-  await CheckPlayAgainStatus();
+    // Checks the updated Play Again status.
+    await CheckPlayAgainStatus();
 };
 
 
 // Runs when the Start New Game button is clicked.
-StartNewGameButton.onclick = async function ()
-{
-  // Tells the server that this player left the current game.
-  await send<string>("leaveGame", token, GameId);
+StartNewGameButton.onclick = async function () {
+    // Tells the server that this player left the current game.
+    await send<string>("leaveGame", token, GameId);
 
-  // Sends the player to the Lobby page to create or join another game.
-  location.href = "/website/pages/Lobby.html";
+    // Sends the player to the Lobby page to create or join another game.
+    location.href = "/website/pages/Lobby.html";
 };
 
 
 // Runs when the Back To Lobby button is clicked.
-BackToLobbyButton.onclick = async function ()
-{
-  // Tells the server that this player left the current game.
-  await send<string>("leaveGame", token, GameId);
+BackToLobbyButton.onclick = async function () {
+    // Tells the server that this player left the current game.
+    await send<string>("leaveGame", token, GameId);
 
-  // Sends the player back to the Lobby page.
-  location.href = "/website/pages/Lobby.html";
+    // Sends the player back to the Lobby page.
+    location.href = "/website/pages/Lobby.html";
 };
 
 
 // Goes through the three rows of the board.
-for (let i = 0; i < 3; i++) 
-{
-  // Goes through the three columns of the current row.
-  for (let j = 0; j < 3; j++) 
-  {
-    // Gives the matching board button an onclick function.
-    Board[i * 3 + j].onclick = async function () 
-    {
-      // Checks whether the game is currently ready for moves.
-      if (CanPlay == false)
-      {
-        // Prints an explanation in the console.
-        console.log("Game has not started yet");
+for (let i = 0; i < 3; i++) {
+    // Goes through the three columns of the current row.
+    for (let j = 0; j < 3; j++) {
+        // Gives the matching board button an onclick function.
+        Board[i * 3 + j].onclick = async function () {
+            // Checks whether the game is currently ready for moves.
+            if (CanPlay == false) {
+                // Prints an explanation in the console.
+                console.log("Game has not started yet");
 
-        // Stops because the player cannot make a move yet.
-        return;
-      }
+                // Stops because the player cannot make a move yet.
+                return;
+            }
 
-      // Asks the server whether it is this user's turn.
-      var turnResult = await CurrentTurn();
+            // Asks the server whether it is this user's turn.
+            var turnResult = await CurrentTurn();
 
-      // Checks whether the server says it is not this user's turn.
-      if (turnResult != "YourTurn")
-      {
-        // Prints an explanation in the console.
-        console.log("It is not your turn");
+            // Checks whether the server says it is not this user's turn.
+            if (turnResult != "YourTurn") {
+                // Prints an explanation in the console.
+                console.log("It is not your turn");
 
-        // Stops without sending a move.
-        return;
-      }
+                // Stops without sending a move.
+                return;
+            }
 
-      // Sends the selected row and column to the makeMove request.
-      var moveResult = await send<string>("makeMove", token, GameId, i, j);
+            // Sends the selected row and column to the makeMove request.
+            var moveResult = await send<string>("makeMove", token, GameId, i, j);
 
-      // Prints the move result in the browser console.
-      console.log(moveResult);
+            // Prints the move result in the browser console.
+            console.log(moveResult);
 
-      // Loads the updated board after the move.
-      await CheckBoardState();
+            // Loads the updated board after the move.
+            await CheckBoardState();
 
-      // Checks whether the move created a win or tie.
-      await CheckForWin();
+            // Checks whether the move created a win or tie.
+            await CheckForWin();
 
-      // Checks whether the game is still active.
-      if (GameFinished == false)
-      {
-        // Changes the background to the color of the next player's turn.
-        await UpdateBackgroundByTurnColor();
-      }
-    };
-  }
+            // Checks whether the game is still active.
+            if (GameFinished == false) {
+                // Changes the background to the color of the next player's turn.
+                await UpdateBackgroundByTurnColor();
+            }
+        };
+    }
 }
 
 
@@ -828,22 +814,21 @@ await CheckForWin();
 
 
 // Runs the following code repeatedly every two seconds.
-setInterval(async function () 
-{
-  // Reloads the current player colors.
-  await LoadGameColors();
+setInterval(async function () {
+    // Reloads the current player colors.
+    await LoadGameColors();
 
-  // Checks whether players joined or pressed Start.
-  await CheckGameStatus();
+    // Checks whether players joined or pressed Start.
+    await CheckGameStatus();
 
-  // Loads any new moves from the server.
-  await CheckBoardState();
+    // Loads any new moves from the server.
+    await CheckBoardState();
 
-  // Checks whether the game ended.
-  await CheckForWin();
+    // Checks whether the game ended.
+    await CheckForWin();
 
-  // Checks whether players selected Play Again or left the game.
-  await CheckPlayAgainStatus();
+    // Checks whether players selected Play Again or left the game.
+    await CheckPlayAgainStatus();
 
-// Sets the interval time to 2000 milliseconds, which equals two seconds.
+    // Sets the interval time to 2000 milliseconds, which equals two seconds.
 }, 2000);

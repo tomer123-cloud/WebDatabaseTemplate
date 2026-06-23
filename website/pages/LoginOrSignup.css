@@ -90,14 +90,7 @@ body {
   pointer-events: none;
 }
 
-/* #TicTacToeLeftSideBackrounndImg {
-  height: 1000px;
-  pointer-events: none;
-  position: fixed;
-  top: 0px;
-  left: 50%;
-  transform: translateX(-500px);
-}  */
+
 
 #hr1 {
   border: none;
@@ -105,24 +98,4 @@ body {
   width: fit-content;
   background-color: black;
 
-}
-
-#CircleCharecter{
-  display: block;
-  width: 1250px;
-  pointer-events: none;
-  position: fixed;
-  left: 50%;
-  top: 27%;
-
-}
-
-
-#XCharecter{
-  display: block;
-  position: fixed;
-  width: 2250px;
- pointer-events: none; /*זה אומר שאי אפשר לבחור את התמונה ולהזיז אותה */
-  right: 45%;
-  top: 12%;  
 }

@@ -7,7 +7,7 @@ body {
   height: 100vh;
 }
 
-#ContainerDiv{
+#ContainerDiv {
   height: 100vh;
   display: flex;
   flex-direction: row;
@@ -30,7 +30,7 @@ body {
 #SmallButtonContainer {
   display: flex;
   flex-direction: row;
- gap: 40px;
+  gap: 40px;
 }
 
 #XWarriorCharacter {
@@ -69,7 +69,7 @@ body {
   border-radius: 25px;
 
   background: linear-gradient(#0f172a, #0f172a) padding-box,
-              linear-gradient(90deg, #ff3333, #3388ff, #ff3333) border-box;
+    linear-gradient(90deg, #ff3333, #3388ff, #ff3333) border-box;
 
   background-size: 100% 100%, 300% 300%;
 
@@ -84,8 +84,8 @@ body {
   cursor: pointer;
 
   box-shadow: 0px 0px 45px rgba(255, 255, 255, 0.25),
-              0px 0px 35px rgba(51, 136, 255, 0.55),
-              0px 0px 35px rgba(255, 51, 51, 0.45);
+    0px 0px 35px rgba(51, 136, 255, 0.55),
+    0px 0px 35px rgba(255, 51, 51, 0.45);
 
   filter: brightness(1.25);
 }
@@ -104,7 +104,6 @@ body {
   width: 260px;
   height: 70px;
 
-
   font-size: 28px;
   font-weight: bold;
 
@@ -118,6 +117,12 @@ body {
 
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.35);
   transition: 0.22s;
+
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #HowToPlayButton:hover {
@@ -125,9 +130,10 @@ body {
   border-color: #ff3333;
 
   box-shadow: 0px 0px 25px rgba(51, 136, 255, 0.45),
-              0px 0px 20px rgba(255, 51, 51, 0.35);
+    0px 0px 20px rgba(255, 51, 51, 0.35);
 
   cursor: pointer;
+  transform: scale(1.05);
 }
 
 #CreditsButton {
@@ -147,6 +153,14 @@ body {
 
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.35);
   transition: 0.22s;
+
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
 }
 
 #CreditsButton:hover {
@@ -154,7 +168,7 @@ body {
   border-color: #ff3333;
 
   box-shadow: 0px 0px 25px rgba(51, 136, 255, 0.45),
-              0px 0px 20px rgba(255, 51, 51, 0.35);
+    0px 0px 20px rgba(255, 51, 51, 0.35);
 
   cursor: pointer;
 }
@@ -173,7 +187,7 @@ body {
   text-align: center;
 
   text-shadow: 0px 0px 12px rgba(99, 179, 255, 0.75),
-               0px 0px 22px rgba(51, 136, 255, 0.45);
+    0px 0px 22px rgba(51, 136, 255, 0.45);
 
   margin: 0;
 }
