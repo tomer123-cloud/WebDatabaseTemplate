@@ -1074,3 +1074,12 @@ class GameState
     }
   }
 }
+
+class LeaderBoard(string username, int wins, int ties, int losses)
+
+{
+  string Username { get; set; } = username;
+  int Wins { get; set; } = wins;
+  int Ties { get; set; } = ties;
+  int Losses { get; set; } = losses;
+}
